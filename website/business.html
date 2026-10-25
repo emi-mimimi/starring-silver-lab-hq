@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Starring Silver Lab · Business model</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&family=Gloock&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+/* Business model: paid first, made second (an order loop with money travelling round it) → where we sell and what each
+   channel leaves us, as one bar → ways money comes in, as streams flowing into the business → who does the work, now and later. */
+.sec{padding-block:72px 8px}
+.sec h2{font-family:var(--f-display);font-weight:400;font-size:clamp(30px,4vw,44px);line-height:1.05;margin:0;text-wrap:balance}
+.head{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.head p{margin:0;color:var(--text-2);font-size:17px;max-width:46ch;text-wrap:pretty}
+.card{position:relative;border:1px solid var(--line);border-radius:26px;overflow:hidden;
+  background:radial-gradient(ellipse 70% 60% at 50% 100%, color-mix(in srgb, var(--surface-2) 90%, transparent), transparent 70%), color-mix(in srgb, var(--surface) 55%, transparent)}
+.mono{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase}
+.note{display:grid;grid-template-columns:22px 1fr;gap:10px;padding:14px 16px;border-radius:16px;background:var(--bg);border:1px solid var(--line)}
+.note .spark{width:18px;height:18px;color:var(--accent);margin-top:2px}
+.note b{display:block;font-size:15px}
+.note span:last-child{display:block;color:var(--text-2);font-size:14.5px;margin-top:2px}
+.swap{animation:swap .35s ease}
+@keyframes swap{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* paid first, made second */
+.hero{display:grid;grid-template-columns:minmax(0,6fr) minmax(0,5fr);gap:32px 56px;align-items:center;padding-block:56px 24px}
+.hero-txt{display:flex;flex-direction:column;gap:16px;min-width:0}
+.hero h1{font-family:var(--f-display);font-weight:400;font-size:clamp(40px,5.4vw,68px);line-height:1.02;margin:0;text-wrap:balance}
+.hero h1 em{font-style:normal;color:var(--t-money);text-shadow:0 0 30px color-mix(in srgb, var(--t-money) 40%, transparent)}
+.hero p{margin:0;color:var(--text-2);font-size:18px;max-width:38ch;text-wrap:pretty}
+.loopcard{padding:22px 20px 18px;display:flex;flex-direction:column;gap:14px;align-items:center}
+.loop{position:relative;width:100%;max-width:340px;aspect-ratio:1}
+.loop svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.node{position:absolute;transform:translate(-50%,-50%);display:inline-flex;align-items:center;gap:6px;white-space:nowrap;border:1px solid var(--line);background:var(--bg);color:var(--text-2);border-radius:999px;padding:7px 12px;font-size:13.5px;font-weight:600;cursor:pointer;transition:all .25s}
+.node .spark{width:11px;height:11px;color:var(--t-money)}
+.node:hover{color:var(--text);border-color:var(--text-2)}
+.node[aria-pressed="true"]{background:var(--t-money);border-color:var(--t-money);color:var(--bg)}
+.node[aria-pressed="true"] .spark{color:var(--bg)}
+.hub-c{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;color:var(--mute)}
+.hub-c .spark{width:34px;height:34px;color:var(--t-make);filter:drop-shadow(0 0 10px color-mix(in srgb, var(--t-make) 60%, transparent))}
+.loopcard .note{width:100%;min-height:84px}
+
+/* where we sell */
+.chan{padding:24px 24px 22px;display:flex;flex-direction:column;gap:18px}
+.chan-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:14px 24px}
+.seg{display:inline-flex;max-width:100%;padding:4px;border:1px solid var(--line);border-radius:999px;background:var(--bg)}
+.seg button{border:none;background:none;border-radius:999px;padding:7px 16px;font-size:14px;font-weight:600;color:var(--text-2);cursor:pointer;transition:background .25s, color .25s;white-space:nowrap}
+.seg button small{font-family:var(--f-mono);font-size:10.5px;font-weight:400;letter-spacing:.06em;text-transform:uppercase;margin-left:7px;opacity:.75}
+.seg button[aria-pressed="true"]{background:var(--text);color:var(--bg)}
+.total{text-align:right}
+.total .mono{display:block;color:var(--mute)}
+.total b{display:block;font-family:var(--f-display);font-weight:400;font-size:clamp(28px,3.4vw,38px);line-height:1.1;font-variant-numeric:tabular-nums}
+.bar{display:flex;height:56px;border-radius:16px;overflow:hidden;gap:3px}
+.bar span{flex-basis:0;min-width:0;background:var(--c);transition:flex-grow .6s cubic-bezier(.2,.8,.2,1)}
+.bar span.keep{box-shadow:0 0 22px color-mix(in srgb, var(--accent) 45%, transparent)}
+.legend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.legend div{display:flex;flex-direction:column;gap:3px;padding:10px 12px;min-width:0}
+.legend .nm{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600}
+.legend .nm i{width:10px;height:10px;border-radius:3px;background:var(--c);flex:none}
+.legend .amt{font-family:var(--f-mono);font-size:13px;color:var(--text-2);font-variant-numeric:tabular-nums}
+.legend .pct{font-family:var(--f-mono);font-size:11px;color:var(--mute)}
+.legend .keep .amt{color:var(--accent)}
+
+/* ways money comes in */
+.flow{position:relative;display:grid;grid-template-columns:minmax(0,5fr) minmax(80px,3fr) auto;align-items:center}
+.flow svg{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.flow path{fill:none;stroke-width:2;stroke-linecap:round;transition:stroke .3s, stroke-width .3s, opacity .3s}
+.flow path.live{stroke:var(--t-money);stroke-dasharray:6 10;animation:run 1.6s linear infinite;opacity:.75}
+.flow path.later{stroke:var(--mute);stroke-dasharray:2 8;opacity:.6}
+.flow path.on{stroke:var(--accent);stroke-width:3;opacity:1}
+@keyframes run{to{stroke-dashoffset:-16}}
+.streams{grid-column:1;display:flex;flex-direction:column;gap:10px;position:relative;z-index:1}
+.stream{display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;border:1px solid var(--line);background:color-mix(in srgb, var(--surface) 60%, transparent);border-radius:16px;padding:14px 16px;cursor:pointer;color:var(--text-2);transition:all .25s;min-width:0}
+.stream b{font-size:15.5px;font-weight:600;color:var(--text)}
+.stream .mono{font-size:10.5px;color:var(--mute);white-space:nowrap}
+.stream.live .mono{color:var(--t-money)}
+.stream:hover{border-color:var(--text-2)}
+.stream[aria-pressed="true"]{border-color:color-mix(in srgb, var(--accent) 65%, transparent);background:color-mix(in srgb, var(--accent) 8%, var(--surface))}
+.hub{grid-column:3;position:relative;z-index:1;display:flex;flex-direction:column;align-items:center;gap:8px;padding:18px 16px;border-radius:20px;border:1px solid color-mix(in srgb, var(--accent) 55%, transparent);background:var(--bg);box-shadow:0 0 30px color-mix(in srgb, var(--accent) 16%, transparent);text-align:center;max-width:150px}
+.hub .spark{width:26px;height:26px;color:var(--accent)}
+.hub b{font-family:var(--f-display);font-weight:400;font-size:18px;line-height:1.15}
+#s-note{margin-top:14px;max-width:640px}
+
+/* who does the work */
+.board{padding:10px 20px 14px}
+.trow{display:grid;grid-template-columns:minmax(0,4fr) minmax(0,5fr) 28px minmax(0,5fr);gap:10px 14px;align-items:center;padding:13px 4px;border-bottom:1px solid color-mix(in srgb, var(--line) 70%, transparent)}
+.trow:last-child{border-bottom:none}
+.trow.th{padding-block:12px 10px}
+.trow.th .mono{color:var(--mute)}
+.trow .job{font-size:15px;font-weight:600}
+.trow .arw{width:18px;height:18px;color:var(--mute)}
+.chips{display:flex;flex-wrap:wrap;gap:6px;min-width:0}
+.chip{display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:5px 11px 5px 9px;font-size:13px;font-weight:500;background:color-mix(in srgb, var(--c) 14%, var(--bg));border:1px solid color-mix(in srgb, var(--c) 40%, transparent);color:var(--text)}
+.chip i{width:8px;height:8px;border-radius:50%;background:var(--c);flex:none}
+.trow .lbl{display:none}
+
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr}
+}
+@media (max-width:700px){
+  .flow{grid-template-columns:1fr}
+  .flow svg,.hub{display:none}
+  .trow{grid-template-columns:1fr;gap:6px}
+  .trow.th{display:none}
+  .trow .arw{display:none}
+  .trow .lbl{display:block;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);margin-bottom:2px}
+}
+@media (max-width:620px){
+  .chan{padding:16px 12px 14px}
+  .total{text-align:left}
+  .seg{display:flex;width:100%}
+  .seg button{flex:1;padding:7px 6px;font-size:13.5px}
+  .seg button small{display:block;margin:1px 0 0}
+  .legend div{padding:8px 4px}
+  .board{padding:6px 14px 12px}
+  .node{font-size:12.5px;padding:6px 10px}
+}
+</style>
+
+<canvas id="sparkles" aria-hidden="true"></canvas>
+<header class="nav" id="nav" data-clear></header>
+
+<main class="wrap">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-txt" data-clear>
+      <div class="eyebrow" id="hero-eyebrow"></div>
+      <h1 id="hero-title"></h1>
+      <p id="hero-line"></p>
+    </div>
+    <div class="card loopcard" data-clear>
+      <div class="loop" id="loop">
+        <svg viewBox="0 0 400 400" aria-hidden="true">
+          <circle cx="200" cy="200" r="150" fill="none" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="3 8"/>
+          <path id="ring" d="M200 50a150 150 0 1 1 0 300a150 150 0 1 1 0-300" fill="none"/>
+          <g id="coin">
+            <circle r="9" fill="var(--t-money)" opacity=".25"/>
+            <circle r="5.5" fill="var(--t-money)"/>
+          </g>
+        </svg>
+        <div class="hub-c"><svg class="spark" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2.5C12.6 9 15 11.4 21.5 12 15 12.6 12.6 15 12 21.5 11.4 15 9 12.6 2.5 12 9 11.4 11.4 9 12 2.5z"/></svg></div>
+      </div>
+      <div class="note" id="loop-note" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="chan-title">
+    <div class="head" data-clear><h2 id="chan-title"></h2><p id="chan-line"></p></div>
+    <div class="card chan" data-clear>
+      <div class="chan-top">
+        <div class="seg" id="chan-seg" role="group" aria-label="Channel"></div>
+        <div class="total"><span class="mono" id="keep-label"></span><b id="keep-amt"></b></div>
+      </div>
+      <div class="bar" id="chan-bar"></div>
+      <div class="legend" id="chan-legend"></div>
+      <div class="note" id="chan-note" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="streams-title">
+    <div class="head" data-clear><h2 id="streams-title"></h2></div>
+    <div class="flow" id="flow" data-clear>
+      <svg id="flow-svg" aria-hidden="true"></svg>
+      <div class="streams" id="streams" role="group" aria-label="Ways money comes in"></div>
+      <div class="hub" id="hub"></div>
+    </div>
+    <div class="note" id="s-note" aria-live="polite" data-clear></div>
+  </section>
+
+  <section class="sec" aria-labelledby="team-title">
+    <div class="head" data-clear><h2 id="team-title"></h2><p id="team-line"></p></div>
+    <div class="card board" id="board" data-clear></div>
+  </section>
+
+  <nav class="pager" id="pager" aria-label="Pages" data-clear style="margin-top:56px"></nav>
+</main>
+
+<script src="assets/content.js"></script>
+<script src="assets/site.js"></script>
+<script>
+(function(){
+  const S = window.SITE, B = S.business, { spark } = window.SSL;
+  const $ = id => document.getElementById(id);
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const pop = el => { el.classList.remove("swap"); void el.offsetWidth; el.classList.add("swap"); };
+  const vnd = n => n.toLocaleString("en-US") + "₫";
+
+  SSL.renderNav("business");
+  SSL.renderPager("business");
+
+  /* ---------- paid first, made second ---------- */
+  const H = B.hero, loop = $("loop"), lnote = $("loop-note");
+  $("hero-eyebrow").textContent = H.eyebrow;
+  $("hero-title").innerHTML = H.title.replace(H.glow, `<em>${H.glow}</em>`);
+  $("hero-line").textContent = H.line;
+  const n = H.steps.length;
+  loop.insertAdjacentHTML("beforeend", H.steps.map((s, i) => {
+    const a = -Math.PI / 2 + i * 2 * Math.PI / n, x = 50 + 37.5 * Math.cos(a), y = 50 + 37.5 * Math.sin(a);
+    return `<button class="node" type="button" data-i="${i}" aria-pressed="false" style="left:${x.toFixed(2)}%;top:${y.toFixed(2)}%">${spark()}${s.name}</button>`;
+  }).join(""));
+  let stepI = 0, userPicked = false;
+  function pickStep(i, animate){
+    stepI = i;
+    loop.querySelectorAll(".node").forEach(b => b.setAttribute("aria-pressed", String(+b.dataset.i === i)));
+    lnote.innerHTML = `${spark()}<div><b>${H.steps[i].name}</b><span>${H.steps[i].line}</span></div>`;
+    if (animate) pop(lnote);
+  }
+  loop.addEventListener("click", e => { const b = e.target.closest(".node"); if (b){ userPicked = true; pickStep(+b.dataset.i, true); } });
+  pickStep(0, false);
+  /* the coin goes round the loop; it lights each step as it passes until someone picks one */
+  const ring = $("ring"), coin = $("coin"), L = ring.getTotalLength();
+  const place = k => { const p = ring.getPointAtLength(k * L); coin.setAttribute("transform", `translate(${p.x} ${p.y})`); };
+  place(0);
+  if (!still){
+    const T = 9000, t0 = performance.now();
+    const tick = t => {
+      const k = ((t - t0) % T) / T; place(k);
+      const i = Math.floor((k + .5 / n) * n) % n;
+      if (!userPicked && i !== stepI) pickStep(i, true);
+      requestAnimationFrame(tick);
+    };
+    requestAnimationFrame(tick);
+  }
+
+  /* ---------- where we sell, and what we keep ---------- */
+  const C = B.channels, seg = $("chan-seg"), bar = $("chan-bar"), legend = $("chan-legend"), cnote = $("chan-note");
+  $("chan-title").textContent = C.title;
+  $("chan-line").textContent = C.line;
+  $("keep-label").textContent = C.labels.keep;
+  seg.innerHTML = C.list.map(ch => `<button type="button" data-id="${ch.id}" aria-pressed="false">${ch.name}<small>${ch.sub}</small></button>`).join("");
+  const PARTS = [["cost", "var(--mute)"], ["fee", "var(--t-sell)"], ["keep", "var(--accent)"]];
+  bar.innerHTML = PARTS.map(([k, c]) => `<span class="${k}" style="--c:${c}"></span>`).join("");
+  function pickChan(id, animate){
+    const ch = C.list.find(x => x.id === id), vals = {cost: C.cost, fee: ch.fee, keep: ch.keep};
+    seg.querySelectorAll("button").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.id === id)));
+    PARTS.forEach(([k]) => { bar.querySelector("." + k).style.flexGrow = vals[k]; });
+    legend.innerHTML = PARTS.map(([k, c]) => `<div class="${k}" style="--c:${c}"><span class="nm"><i></i>${C.labels[k]}</span><span class="amt">${vnd(vals[k])}</span><span class="pct">${Math.round(vals[k] / C.price * 100)}%</span></div>`).join("");
+    $("keep-amt").textContent = vnd(ch.keep);
+    cnote.innerHTML = `${spark()}<div><b>${ch.name}</b><span>${ch.note}</span></div>`;
+    if (animate) pop(cnote);
+  }
+  seg.addEventListener("click", e => { const b = e.target.closest("button"); if (b) pickChan(b.dataset.id, true); });
+  pickChan(C.start, false);
+
+  /* ---------- ways money comes in ---------- */
+  const W = B.streams, flow = $("flow"), fsvg = $("flow-svg"), list = $("streams"), snote = $("s-note");
+  $("streams-title").textContent = W.title;
+  $("hub").innerHTML = `${spark()}<b>${W.hub}</b>`;
+  list.innerHTML = W.list.map(s => `<button class="stream ${s.live ? "live" : ""}" type="button" data-id="${s.id}" aria-pressed="false"><b>${s.name}</b><span class="mono">${s.when}</span></button>`).join("");
+  let streamId = W.start;
+  function drawFlow(){
+    const o = flow.getBoundingClientRect(), hub = $("hub").getBoundingClientRect();
+    if (getComputedStyle(fsvg).display === "none") return;
+    fsvg.setAttribute("viewBox", `0 0 ${o.width} ${o.height}`);
+    const hx = hub.left - o.left, hy = hub.top - o.top + hub.height / 2;
+    fsvg.innerHTML = W.list.map(s => {
+      const r = list.querySelector(`[data-id="${s.id}"]`).getBoundingClientRect();
+      const x1 = r.right - o.left, y1 = r.top - o.top + r.height / 2, m = (x1 + hx) / 2;
+      return `<path data-id="${s.id}" class="${s.live ? "live" : "later"} ${s.id === streamId ? "on" : ""}" d="M${x1} ${y1} C${m} ${y1} ${m} ${hy} ${hx} ${hy}"/>`;
+    }).join("");
+  }
+  function pickStream(id, animate){
+    streamId = id;
+    const s = W.list.find(x => x.id === id);
+    list.querySelectorAll(".stream").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.id === id)));
+    fsvg.querySelectorAll("path").forEach(p => p.classList.toggle("on", p.dataset.id === id));
+    snote.innerHTML = `${spark()}<div><b>${s.name}</b><span>${s.line}</span></div>`;
+    if (animate) pop(snote);
+  }
+  list.addEventListener("click", e => { const b = e.target.closest(".stream"); if (b) pickStream(b.dataset.id, true); });
+  drawFlow(); pickStream(W.start, false);
+  new ResizeObserver(drawFlow).observe(flow);
+  document.fonts && document.fonts.ready.then(drawFlow);
+
+  /* ---------- who does the work ---------- */
+  const T = B.team;
+  $("team-title").textContent = T.title;
+  $("team-line").textContent = T.line;
+  const arw = '<svg class="arw" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+  const chips = arr => `<div class="chips">${arr.map(([w, t]) => `<span class="chip" style="--c:${T.who[w].color}"><i></i>${t}</span>`).join("")}</div>`;
+  $("board").innerHTML = `<div class="trow th"><span></span><span class="mono">${T.cols[0]}</span><span></span><span class="mono">${T.cols[1]}</span></div>` +
+    T.rows.map(r => `<div class="trow"><span class="job">${r.job}</span><div><span class="lbl">${T.cols[0]}</span>${chips(r.now)}</div>${arw}<div><span class="lbl">${T.cols[1]}</span>${chips(r.later)}</div></div>`).join("");
+
+  SSL.sparkles();
+})();
+</script>

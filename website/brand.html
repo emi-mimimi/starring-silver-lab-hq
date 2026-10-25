@@ -1,0 +1,307 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Starring Silver Lab · Brand</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&family=Gloock&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+/* Brand as a short story: opening credits ("Starring … you") → four chapters, each a line of text beside a small
+   illustrated scene (the lead, the same trend on everyone, online vs Monday, everyone with their own detail) → the closing line → what we believe. */
+
+/* opening credits */
+.why{position:relative;text-align:center;padding-block:72px 32px;display:flex;flex-direction:column;align-items:center;gap:10px}
+#glow{position:absolute;top:0;left:0;width:100%;z-index:0;pointer-events:none;
+  background:radial-gradient(circle 380px at var(--gx,50%) var(--gy,300px), color-mix(in srgb, var(--accent) 11%, transparent), transparent 72%)}
+.role{font-family:var(--f-mono);font-size:13px;letter-spacing:.6em;padding-left:.6em;text-transform:uppercase;color:var(--text-2);margin-top:18px}
+.who{font-family:var(--f-display);font-weight:400;font-size:clamp(110px,20vw,230px);line-height:.82;color:var(--accent);
+  text-shadow:0 0 40px color-mix(in srgb, var(--accent) 40%, transparent);animation:credit 1.6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes credit{from{letter-spacing:.18em;transform:translateY(14px)}to{letter-spacing:0;transform:none}}
+.why h1{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,3.4vw,38px);line-height:1.15;margin:22px 0 0;max-width:22ch;text-wrap:balance}
+.why p{margin:0;color:var(--text-2);font-size:17px;max-width:40ch;text-wrap:balance}
+
+/* chapters */
+.ch{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,7fr);gap:28px 56px;align-items:center;padding-block:64px}
+.ch.flip{grid-template-columns:minmax(0,7fr) minmax(0,5fr)}
+.ch.flip .txt{order:2}
+.txt{display:flex;flex-direction:column;gap:14px;min-width:0}
+.txt h2{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,3.4vw,40px);line-height:1.1;margin:0;text-wrap:balance}
+.txt p{margin:0;color:var(--text-2);font-size:17px;line-height:1.6;max-width:44ch;text-wrap:pretty}
+.vis{position:relative;min-height:340px;border:1px solid var(--line);border-radius:24px;overflow:hidden;display:grid;place-items:center;padding:28px 20px;
+  background:radial-gradient(ellipse 70% 60% at 50% 100%, color-mix(in srgb, var(--surface-2) 90%, transparent), transparent 70%), color-mix(in srgb, var(--surface) 55%, transparent)}
+.fig{display:block;overflow:visible}
+.fig .pc{filter:drop-shadow(0 0 3px rgba(255,255,255,.75));transform-box:fill-box;transform-origin:center}
+
+/* 1. the lead */
+.lineup{display:flex;align-items:flex-end;justify-content:center;gap:2%;width:100%}
+.lineup .fig{width:17%;max-width:118px}
+.lineup .lead{width:24%;max-width:160px;transform:translateY(-6px)}
+.glints{position:absolute;inset:0;pointer-events:none}
+.glints .spark{position:absolute;color:var(--accent)}
+
+/* 2. the same trend */
+.crowd{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px 6px;width:100%;max-width:560px;cursor:pointer}
+.crowd .fig{width:100%;transition:transform .35s cubic-bezier(.2,.8,.2,1)}
+.crowd.flip .fig{transform:scaleX(.08)}
+
+/* 3. online vs Monday */
+.split{position:relative;width:100%;max-width:520px;aspect-ratio:5 / 4;border-radius:18px;overflow:hidden;touch-action:none;user-select:none}
+.side{position:absolute;inset:0;display:grid;place-items:end center}
+.side .fig{width:62%;max-width:300px}
+.side.on{background:radial-gradient(circle at 30% 25%, color-mix(in srgb, var(--t-story) 30%, transparent), transparent 55%), radial-gradient(circle at 75% 70%, color-mix(in srgb, var(--t-people) 26%, transparent), transparent 55%), #2A2160;
+  clip-path:inset(0 calc(100% - var(--x, 50%)) 0 0)}
+.side.off{background:#2A2D4C}
+.side .spark{position:absolute;color:var(--accent)}
+.tag2{position:absolute;top:14px;z-index:3;font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;padding:4px 10px;border-radius:999px;background:rgba(14,15,36,.6);color:var(--text)}
+.tag2.l{left:14px}
+.tag2.r{right:14px;color:var(--mute)}
+.handle{position:absolute;top:0;bottom:0;left:var(--x, 50%);width:2px;margin-left:-1px;background:var(--text);z-index:2;pointer-events:none}
+.handle i{position:absolute;top:50%;left:50%;width:40px;height:40px;margin:-20px 0 0 -20px;border-radius:50%;background:var(--text);color:var(--bg);display:grid;place-items:center;box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.handle svg{width:18px;height:18px}
+.split input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0;z-index:4}
+.split:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:3px}
+
+/* 4. the detail */
+.cast{display:flex;align-items:flex-end;justify-content:center;gap:2%;width:100%}
+.cast button{width:19%;max-width:130px;background:none;border:none;padding:0;cursor:pointer;transition:transform .3s cubic-bezier(.2,.8,.2,1)}
+.cast button:hover{transform:translateY(-6px)}
+.cast .fig{width:100%}
+.hint{position:absolute;bottom:14px;left:0;right:0;text-align:center;font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+
+/* closing line */
+.close{display:flex;flex-direction:column;align-items:center;text-align:center;gap:4px;padding-block:72px 40px}
+.close p{margin:0;font-family:var(--f-display);font-size:clamp(28px,4.4vw,52px);line-height:1.12;color:var(--mute)}
+.close p:last-of-type{color:var(--text)}
+.close .tagline{margin-top:22px;display:inline-flex;align-items:center;gap:10px;font-family:var(--f-mono);font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.close .tagline .spark{width:14px;height:14px}
+
+/* what we believe */
+.believe{padding-block:56px 16px}
+.believe h2{font-family:var(--f-display);font-weight:400;font-size:clamp(28px,3.4vw,40px);line-height:1.1;margin:0 0 26px}
+.vals{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px 22px}
+.val{display:flex;flex-direction:column;gap:8px;padding-top:18px;border-top:1px solid var(--line);min-width:0}
+.val .spark{width:22px;height:22px;color:var(--c);margin-bottom:4px;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.val:hover .spark{transform:rotate(90deg) scale(1.2)}
+.val h3{font-family:var(--f-display);font-weight:400;font-size:24px;line-height:1.1;margin:0}
+.val p{margin:0;font-size:15px;color:var(--text-2)}
+
+@media (max-width:900px){
+  .ch,.ch.flip{grid-template-columns:1fr;padding-block:44px}
+  .ch.flip .txt{order:0}
+  .vals{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (max-width:560px){
+  .vis{min-height:260px;padding:20px 12px}
+  .crowd{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .vals{grid-template-columns:1fr}
+}
+</style>
+
+<canvas id="sparkles" aria-hidden="true"></canvas>
+<div id="glow" aria-hidden="true"></div>
+<header class="nav" id="nav" data-clear></header>
+
+<main class="wrap">
+  <section class="why" id="why" aria-labelledby="why-title">
+    <div class="eyebrow" id="why-eyebrow" data-clear></div>
+    <div class="role" id="why-role" data-clear></div>
+    <div class="who" id="why-who" data-clear></div>
+    <h1 id="why-title" data-clear></h1>
+    <p id="why-line" data-clear></p>
+  </section>
+
+  <div id="chapters"></div>
+
+  <section class="close" data-clear aria-label="Why it matters">
+    <div id="close-lines"></div>
+    <span class="tagline" id="close-tag"></span>
+  </section>
+
+  <section class="believe" aria-labelledby="believe-title">
+    <h2 id="believe-title" data-clear></h2>
+    <div class="vals" id="vals" data-clear></div>
+  </section>
+
+  <nav class="pager" id="pager" aria-label="Pages" data-clear></nav>
+</main>
+
+<script src="assets/content.js"></script>
+<script src="assets/site.js"></script>
+<script>
+(function(){
+  const S = window.SITE, B = S.brand, { spark, STAR } = window.SSL;
+  const $ = id => document.getElementById(id);
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  SSL.renderNav("brand");
+  SSL.renderPager("brand");
+
+  /* opening credits */
+  $("why-eyebrow").textContent = B.why.eyebrow;
+  $("why-role").textContent = B.why.role;
+  $("why-who").textContent = B.why.who;
+  $("why-title").textContent = B.why.title;
+  $("why-line").textContent = B.why.line;
+  /* soft spotlight: rests on "you", follows the pointer over the opening; its layer reaches well past the
+     opening so the light always fades out on its own instead of being cut off */
+  const why = $("why"), glow = $("glow"), who = $("why-who");
+  let gx = 0, gy = 0, tx = 0, ty = 0, over = false;
+  function rest(){
+    const r = who.getBoundingClientRect();
+    tx = r.left + r.width / 2 + scrollX; ty = r.top + r.height / 2 + scrollY;
+    const w = why.getBoundingClientRect();
+    glow.style.height = (w.bottom + scrollY + 420) + "px";
+  }
+  function paint(){ glow.style.setProperty("--gx", gx + "px"); glow.style.setProperty("--gy", gy + "px"); }
+  rest(); gx = tx; gy = ty; paint();
+  why.addEventListener("pointermove", e => { over = true; tx = e.pageX; ty = e.pageY; });
+  why.addEventListener("pointerleave", () => { over = false; rest(); });
+  addEventListener("resize", () => { rest(); if (!over){ gx = tx; gy = ty; paint(); } });
+  document.fonts && document.fonts.ready.then(() => { rest(); if (!over){ gx = tx; gy = ty; paint(); } });
+  if (!matchMedia("(prefers-reduced-motion: reduce)").matches){
+    const loop = () => { gx += (tx - gx) * .14; gy += (ty - gy) * .14; paint(); requestAnimationFrame(loop); };
+    requestAnimationFrame(loop);
+  } else { why.addEventListener("pointermove", () => { gx = tx; gy = ty; paint(); }); }
+
+  /* ---------- the characters: simple faces, the detail does the talking ---------- */
+  const SILVER = "#F4F2FF";
+  const star = (x, y, r, fill = SILVER) => `<g class="pc"><path fill="${fill}" transform="translate(${x - r} ${y - r}) scale(${r / 12})" d="${STAR}"/></g>`;
+  const HAIR_BACK = {
+    bob:  "M26 60C26 36 42 26 60 26S94 36 94 60V92H82V60H38V92H26Z",
+    long: "M24 62C24 34 42 24 60 24S96 34 96 62L100 118H82L84 66H36L38 118H20Z"
+  };
+  const HAIR_FRONT = {
+    cap:   "M29 64C27 40 42 28 60 28S93 40 91 64C84 52 70 44 52 46C42 47 34 54 29 64Z",
+    bob:   "M27 64A33 36 0 0 1 93 64C84 52 72 47 60 49C48 47 36 52 27 64Z",
+    long:  "M27 64A33 36 0 0 1 93 64C84 52 72 47 60 49C48 47 36 52 27 64Z",
+    bun:   "M29 64C27 40 42 28 60 28S93 40 91 64C84 52 70 44 52 46C42 47 34 54 29 64ZM60 12a12 12 0 1 1 0 24a12 12 0 1 1 0-24Z",
+    spiky: "M26 70L28 46L18 36L38 36L40 18L54 30L62 10L70 30L86 18L84 38L102 40L90 52L92 70C84 56 70 50 58 50C46 50 34 58 26 70Z",
+    side:  "M28 68C26 40 42 28 62 28S94 40 92 60C80 60 66 52 58 40C52 52 40 60 28 68Z"
+  };
+  const PIECE = {
+    stars:   () => star(30, 84, 6) + star(90, 84, 6),
+    hoops:   () => `<g class="pc" fill="none" stroke="${SILVER}" stroke-width="2.4"><circle cx="30" cy="88" r="6"/><circle cx="90" cy="88" r="6"/></g>`,
+    choker:  () => `<path d="M45 99Q60 108 75 99" fill="none" stroke="#14152E" stroke-width="3.5" stroke-linecap="round"/>` + star(60, 111, 7),
+    clip:    () => star(80, 40, 8) + star(70, 34, 4),
+    flower:  () => { let p = `<path class="pc" d="M44 104Q60 128 76 104" fill="none" stroke="${SILVER}" stroke-width="1.2"/><g class="pc" fill="${SILVER}">`;
+                     for (let k = 0; k < 6; k++) p += `<ellipse cx="60" cy="118.5" rx="2.6" ry="5" transform="rotate(${k * 60} 60 124)"/>`;
+                     return p + `</g><circle cx="60" cy="124" r="2.4" fill="#FFD37E"/>`; },
+    drops:   () => `<g class="pc" stroke="${SILVER}" stroke-width="1.6" fill="${SILVER}"><path d="M30 80v9M90 80v9"/><circle cx="30" cy="92" r="3"/><circle cx="90" cy="92" r="3"/></g>`
+  };
+  function fig(o){
+    const c = Object.assign({hair: "cap", hairC: "#4A4F8F", skin: "#8E92C6", body: "#2E3270", eye: "#1D1F52", pieces: []}, o);
+    return `<svg class="fig ${c.cls || ""}" viewBox="0 0 120 150" aria-hidden="true">
+      ${HAIR_BACK[c.hair] ? `<path fill="${c.hairC}" d="${HAIR_BACK[c.hair]}"/>` : ""}
+      <path fill="${c.body}" d="M8 150C12 120 34 106 60 106S108 120 112 150Z"/>
+      <rect x="52" y="86" width="16" height="22" rx="6" fill="${c.skin}"/>
+      <circle cx="60" cy="62" r="30" fill="${c.skin}"/>
+      <circle cx="49" cy="66" r="3" fill="${c.eye}"/><circle cx="71" cy="66" r="3" fill="${c.eye}"/>
+      <path d="M55 77q5 4 10 0" fill="none" stroke="${c.eye}" stroke-width="2" stroke-linecap="round"/>
+      <path fill="${c.hairC}" d="${HAIR_FRONT[c.hair]}"/>
+      ${c.pieces.map(p => PIECE[p]()).join("")}
+    </svg>`;
+  }
+  const BRIGHT = {skin: "#E9E7FF", eye: "#1D1F52"};
+
+  /* scenes */
+  const scene = {
+    lead(){
+      const g = fig({});
+      return `<div class="lineup">${g}${g}${fig(Object.assign({}, BRIGHT, {cls: "lead", hair: "side", hairC: "#FFD37E", body: "#3B3F8C", pieces: ["stars", "choker", "clip"]}))}${g}${g}</div>
+        <div class="glints">${spark()}${spark()}${spark()}</div>`;
+    },
+    trend(){ return `<div class="crowd" id="crowd" title="Next trend"></div>`; },
+    split(c){
+      return `<div class="split" id="split" style="--x:50%">
+        <div class="side off">${fig({hair: "cap", pieces: []})}</div>
+        <div class="side on">${fig(Object.assign({}, BRIGHT, {hair: "long", hairC: "#FFA3C8", body: "#4A3A8C", pieces: ["stars", "clip", "choker"]}))}
+          <span class="spark" style="left:16%;top:22%;width:18px;height:18px">${spark()}</span><span class="spark" style="left:30%;top:60%;width:11px;height:11px">${spark()}</span></div>
+        <span class="tag2 l">${c.left}</span><span class="tag2 r">${c.right}</span>
+        <span class="handle"><i><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l-6 6 6 6M15 6l6 6-6 6"/></svg></i></span>
+        <input type="range" id="split-range" min="0" max="100" value="50" aria-label="${c.left} or ${c.right}">
+      </div>`;
+    },
+    detail(c){ return `<div class="cast" id="cast"></div><div class="hint">${c.hint}</div>`; }
+  };
+
+  $("chapters").innerHTML = B.chapters.map((c, i) => `
+    <section class="ch ${i % 2 ? "flip" : ""}" aria-labelledby="ch-${c.id}">
+      <div class="txt" data-clear><h2 id="ch-${c.id}">${c.title}</h2><p>${c.body}</p></div>
+      <div class="vis" data-clear>${scene[c.id](c)}</div>
+    </section>`).join("");
+
+  /* 1. glints around the lead */
+  const GL = [[58, 20, 16], [40, 34, 10], [63, 46, 9]];
+  document.querySelectorAll(".glints .spark").forEach((s, i) => { const [x, y, z] = GL[i]; Object.assign(s.style, {left: x + "%", top: y + "%", width: z + "px", height: z + "px"}); s.querySelector("path").classList.add("pulse"); s.querySelector("path").style.animationDelay = (-i * .8) + "s"; });
+
+  /* 2. everyone changes to the same trend at once */
+  const TRENDS = [ {hair: "cap", pieces: []}, {hair: "bob", pieces: ["hoops"]}, {hair: "long", pieces: []}, {hair: "bun", pieces: ["hoops"]} ];
+  const crowd = $("crowd");
+  let tr = 0;
+  const drawCrowd = () => { crowd.innerHTML = Array.from({length: 12}, () => fig(TRENDS[tr])).join(""); };
+  function nextTrend(){
+    if (still){ tr = (tr + 1) % TRENDS.length; drawCrowd(); return; }
+    crowd.classList.add("flip");
+    setTimeout(() => { tr = (tr + 1) % TRENDS.length; drawCrowd(); crowd.classList.remove("flip"); }, 350);
+  }
+  drawCrowd();
+  crowd.addEventListener("click", nextTrend);
+  let timer = null;
+  if (!still && "IntersectionObserver" in window){
+    new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting && !timer) timer = setInterval(nextTrend, 2400);
+      if (!e.isIntersecting && timer){ clearInterval(timer); timer = null; }
+    }), {threshold: .4}).observe(crowd);
+  }
+
+  /* 3. drag between online and Monday */
+  const split = $("split"), range = $("split-range");
+  const setX = v => split.style.setProperty("--x", v + "%");
+  range.addEventListener("input", () => setX(range.value));
+  let nudged = false;
+  if (!still && "IntersectionObserver" in window){
+    const io = new IntersectionObserver(es => {
+      if (nudged || !es.some(e => e.isIntersecting)) return;
+      nudged = true; io.disconnect();
+      const t0 = performance.now();
+      const step = t => { const k = Math.min(1, (t - t0) / 1600), v = 50 + Math.sin(k * Math.PI * 2) * 18 * (1 - k); setX(v); range.value = v; if (k < 1) requestAnimationFrame(step); };
+      requestAnimationFrame(step);
+    }, {threshold: .6});
+    io.observe(split);
+  }
+
+  /* 4. everyone gets their own detail */
+  const PEOPLE = [
+    {hair: "bob",   hairC: "#C7ADFF", body: "#33407A"},
+    {hair: "side",  hairC: "#D9926B", body: "#5A2E55"},
+    {hair: "cap",   hairC: "#FFD37E", body: "#3B3F8C"},
+    {hair: "bun",   hairC: "#88E9B9", body: "#24456E"},
+    {hair: "long",  hairC: "#FFA3C8", body: "#4A3A8C"}
+  ];
+  const ORDER = ["stars", "choker", "hoops", "flower", "clip", "drops"];
+  const worn = [0, 3, 1, 4, 5];
+  const cast = $("cast");
+  const drawCast = () => { cast.innerHTML = PEOPLE.map((p, i) => `<button type="button" data-i="${i}" aria-label="Try another piece">${fig(Object.assign({}, BRIGHT, p, {pieces: [ORDER[worn[i]]]}))}</button>`).join(""); };
+  drawCast();
+  cast.addEventListener("click", e => {
+    const b = e.target.closest("button"); if (!b) return;
+    const i = +b.dataset.i; worn[i] = (worn[i] + 1) % ORDER.length;
+    b.innerHTML = fig(Object.assign({}, BRIGHT, PEOPLE[i], {pieces: [ORDER[worn[i]]]}));
+    if (!still) b.querySelectorAll(".pc").forEach(p => p.animate([{opacity: 0, transform: "scale(.6)"}, {opacity: 1, transform: "none"}], {duration: 380, easing: "cubic-bezier(.2,.8,.2,1.3)"}));
+  });
+
+  /* closing line */
+  $("close-lines").innerHTML = B.close.lines.map(l => `<p>${l}</p>`).join("");
+  $("close-tag").innerHTML = spark() + B.close.tagline;
+
+  /* what we believe */
+  $("believe-title").textContent = B.values.title;
+  $("vals").innerHTML = B.values.items.map(v => `<div class="val" style="--c:${v.color}">${spark()}<h3>${v.name}</h3><p>${v.line}</p></div>`).join("");
+
+  SSL.sparkles();
+})();
+</script>

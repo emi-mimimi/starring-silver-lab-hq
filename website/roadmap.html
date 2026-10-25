@@ -1,0 +1,1101 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Starring Silver Lab Roadmap</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&family=Gloock&display=swap">
+<style>
+/* Layout: a stepper of six gems (rough ore → set stone) on top; below it the chosen stage: its goal, its steps in order, and the gate that leads to the next stage. Details open in one focused view with a back trail. */
+:root{
+  --bg:#0E0F24;
+  --surface:#1D1F52;
+  --surface-2:#262A63;
+  --line:#3A3F80;
+  --text:#F4F2FF;
+  --text-2:#CBC9EE;
+  --mute:#979BD2;
+  --accent:#FFD37E;
+  --t-make:#E4E5FF;
+  --t-sell:#FFB38A;
+  --t-story:#FFA3C8;
+  --t-money:#88E9B9;
+  --t-people:#95C4FF;
+  --t-run:#C7ADFF;
+  --f-display:"Gloock","Georgia","Times New Roman",serif;
+  --f-body:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"DM Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{background:var(--bg)}
+body{color:var(--text);font-family:var(--f-body);font-size:15px;line-height:1.55;min-height:100vh;overflow-x:hidden;
+  background:radial-gradient(90% 50% at 80% -10%, #22275A 0%, transparent 60%), radial-gradient(70% 45% at 0% 100%, #2A1840 0%, transparent 65%), var(--bg)}
+body.locked{overflow:hidden}
+#sparkles{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
+.wrap{position:relative;z-index:1;max-width:1180px;margin:0 auto;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:28px 48px}
+button{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* header */
+.top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px 24px;padding-block:40px 18px}
+.top h1{margin:12px 0 0}
+.eyebrow{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--mute)}
+h1{font-family:var(--f-display);font-weight:400;font-size:clamp(30px,4.6vw,46px);line-height:1.05;margin:6px 0 0;text-wrap:balance;color:var(--accent);text-shadow:0 0 28px color-mix(in srgb, var(--accent) 35%, transparent)}
+.here{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--text-2);border:1px solid var(--line);border-radius:999px;padding:6px 14px 6px 10px;background:var(--surface)}
+.here b{color:var(--text);font-weight:600}
+.here svg{width:14px;height:14px}
+
+/* stepper */
+.stepper{list-style:none;margin:26px 0 0;padding:0;display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:10px;position:relative}
+.stepper::before{content:"";position:absolute;left:8%;right:8%;top:47px;height:2px;background:var(--line);z-index:0}
+.stepper .lit{position:absolute;left:8%;top:47px;height:2px;background:var(--accent);z-index:0;opacity:.7}
+.step-btn{position:relative;z-index:1;width:100%;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;
+  background:transparent;border:1px solid transparent;border-radius:16px;padding:12px 8px 14px;cursor:pointer;transition:background .2s,border-color .2s}
+.step-btn:hover{background:color-mix(in srgb, var(--surface) 70%, transparent)}
+.step-btn[aria-pressed="true"]{background:color-mix(in srgb, var(--surface) 45%, transparent);border-color:var(--accent)}
+.gem-slot{width:72px;height:72px;display:grid;place-items:center;border-radius:50%;position:relative;border:1px solid var(--line);
+  background:var(--bg)}
+.gem-slot svg.gem{width:58px;height:58px}
+.step-btn.todo .gem-slot svg.gem{opacity:.85;filter:saturate(.8)}
+.step-num{font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute)}
+.step-name{font-weight:600;font-size:14.5px;line-height:1.25;text-wrap:balance}
+.step-months{font-family:var(--f-mono);font-size:11.5px;color:var(--text-2)}
+.step-prog{font-family:var(--f-mono);font-size:11px;color:var(--mute)}
+.here-tag{position:absolute;top:-6px;right:-14px;display:inline-flex;align-items:center;gap:3px;font-family:var(--f-mono);font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--bg);background:var(--accent);border-radius:999px;padding:2px 7px 2px 5px}
+.here-tag svg{width:10px;height:10px}
+
+/* stage hero */
+.stage{margin-top:22px;border:1px solid var(--line);border-radius:22px;padding:28px;
+  background:radial-gradient(ellipse 50% 38% at 100% 100%, color-mix(in srgb, var(--surface) 25%, transparent) 0%, color-mix(in srgb, var(--surface) 60%, transparent) 45%, color-mix(in srgb, var(--surface) 94%, transparent) 100%)}
+.hero{display:grid;grid-template-columns:120px minmax(0,1fr) auto;gap:22px;align-items:center;position:relative;padding-bottom:30px}
+.when{display:flex;flex-direction:column;align-items:flex-end;gap:6px;padding-left:12px}
+.when{flex-direction:column;align-items:flex-end;gap:4px;align-self:start;text-align:right}
+.when-stack{display:flex;flex-direction:column;align-items:center;gap:4px}
+.when-num{font-family:var(--f-display);font-size:clamp(30px,4vw,42px);line-height:1.05;color:var(--accent);white-space:nowrap;text-shadow:0 0 22px color-mix(in srgb, var(--accent) 30%, transparent)}
+.when-lbl{font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+.hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:linear-gradient(90deg, transparent, var(--line) 50%, transparent)}
+.hero::before{content:"";position:absolute;left:50%;bottom:-8px;width:16px;height:16px;transform:translateX(-50%);background:var(--surface);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 1C12.6 9.5 14.5 11.4 23 12 14.5 12.6 12.6 14.5 12 23 11.4 14.5 9.5 12.6 1 12 9.5 11.4 11.4 9.5 12 1z'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 1C12.6 9.5 14.5 11.4 23 12 14.5 12.6 12.6 14.5 12 23 11.4 14.5 9.5 12.6 1 12 9.5 11.4 11.4 9.5 12 1z'/%3E%3C/svg%3E") center/contain no-repeat;
+  background-color:var(--mute);z-index:1}
+.hero-gem{width:120px;height:120px;border-radius:28px;background:var(--bg);display:grid;place-items:center}
+.hero-gem svg{width:96px;height:96px}
+.hero .meta{font-family:var(--f-mono);font-size:12px;letter-spacing:.06em;color:var(--mute);text-transform:uppercase}
+.hero h2{font-family:var(--f-display);font-weight:400;font-size:clamp(30px,4vw,42px);line-height:1.05;margin:4px 0 2px}
+.hero .goal{font-size:15px;font-weight:400;margin:0 0 14px;color:var(--accent);text-wrap:balance}
+.hero .about{margin:0;color:var(--text-2);max-width:68ch}
+.prog-row{display:flex;align-items:center;gap:10px;margin-top:16px;font-family:var(--f-mono);font-size:12px;color:var(--text-2)}
+.bar{width:160px;height:7px;position:relative;display:flex;align-items:center}
+.bar::before{content:"";position:absolute;left:0;right:0;height:3px;border-radius:3px;background:var(--line)}
+.bar i{position:relative;display:block;height:7px;border-radius:7px;background:var(--accent);box-shadow:0 0 8px color-mix(in srgb, var(--accent) 70%, transparent)}
+
+.stage-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;margin-top:32px;align-items:start}
+.board-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:center;gap:10px 16px;margin-bottom:14px}
+.board-head h3{font-family:var(--f-display);font-weight:400;font-size:22px;margin:0}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--text-2)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend svg{width:14px;height:14px}
+.filters{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:transparent;color:var(--text-2);font-size:12.5px;font-weight:500;
+  border-radius:999px;padding:5px 11px 5px 9px;cursor:pointer}
+.chip svg{width:14px;height:14px;color:var(--c, var(--text-2))}
+.chip:hover{color:var(--text);border-color:var(--text-2)}
+.chip[aria-pressed="true"]{background:var(--text);color:var(--bg);border-color:var(--text)}
+.chip[aria-pressed="true"] svg{color:var(--bg)}
+
+/* steps spine */
+.spine{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.row{display:grid;grid-template-columns:72px 1fr;gap:14px}
+.row-label{position:relative;display:flex;flex-direction:column;align-items:center;padding-top:10px}
+.row-label::after{content:"";position:absolute;top:72px;bottom:-10px;width:2px;background:var(--line)}
+.row:last-child .row-label::after{display:none}
+.row-num{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;border:1.5px solid var(--line);background:var(--bg);font-family:var(--f-mono);font-size:13px;color:var(--text-2);position:relative;z-index:1}
+.row-cap{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin-top:6px}
+.row.done .row-num{border-color:var(--text);color:var(--text)}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;padding-bottom:18px}
+.card{position:relative;text-align:left;display:flex;flex-direction:column;gap:6px;min-width:0;background:var(--surface-2);border:1px solid var(--line);border-radius:14px;padding:13px 14px 14px;cursor:pointer;
+  transition:border-color .2s, transform .2s, opacity .2s, box-shadow .2s}
+.card:hover{border-color:var(--text-2);transform:translateY(-1px)}
+.card .ctop{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.card .trk{display:inline-flex;align-items:center;gap:5px;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--c)}
+.card .trk svg{width:13px;height:13px}
+.card .st svg{width:17px;height:17px;display:block}
+.card .nm{font-weight:600;font-size:15px;line-height:1.3}
+.card .sh{font-size:13px;color:var(--text-2);line-height:1.45}
+.card.todo .nm{color:var(--text-2)}
+.card.todo .sh{color:var(--mute)}
+.card.active{border-color:color-mix(in srgb, var(--accent) 70%, transparent)}
+.card.done{background:color-mix(in srgb, var(--c) 10%, var(--surface-2));border-color:color-mix(in srgb, var(--c) 45%, transparent)}
+.card.is-selected{border-color:var(--accent);box-shadow:0 0 0 2px var(--accent)}
+.card.rel{border-style:dashed;border-color:var(--text-2)}
+.board.filtered .card:not(.match){opacity:.22}
+
+/* gate card */
+.gate{position:sticky;top:calc(16px + env(safe-area-inset-top, 0px));border-radius:18px;padding:20px;background:var(--bg);border:1px solid color-mix(in srgb, var(--accent) 45%, transparent)}
+.gate .eyebrow{color:var(--accent)}
+.gate h3{font-family:var(--f-display);font-weight:400;font-size:24px;line-height:1.15;margin:6px 0 4px;text-wrap:balance}
+.gate p.lead{margin:0;color:var(--text-2);font-size:13.5px}
+.checks{list-style:none;padding:0;margin:14px 0 0;display:grid;gap:9px}
+.checks li{display:grid;grid-template-columns:20px 1fr;gap:9px;font-size:14px}
+.checks li svg{width:18px;height:18px;margin-top:2px;color:var(--accent)}
+.fund{margin-top:16px;border-top:1px solid var(--line);padding-top:14px}
+.fund .k{font-family:var(--f-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.fund .n{font-family:var(--f-body);font-weight:700;font-size:28px;letter-spacing:-.01em;color:var(--accent);font-variant-numeric:tabular-nums;line-height:1.2;margin-top:2px}
+.fund .why{font-size:13px;color:var(--text-2);margin:4px 0 0}
+.btn-line{margin-top:14px;width:100%;display:flex;align-items:center;justify-content:center;gap:8px;background:transparent;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-weight:600;font-size:13.5px;cursor:pointer;color:var(--text)}
+.btn-line:hover{border-color:var(--accent);color:var(--accent)}
+.btn-line svg{width:16px;height:16px}
+
+.stage-nav{display:flex;justify-content:space-between;gap:12px;margin-top:8px;padding-top:16px;border-top:1px solid var(--line);position:relative}
+.stage-nav::after{content:"";position:absolute;left:50%;top:-8px;width:16px;height:16px;transform:translateX(-50%);background-color:var(--mute);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 1C12.6 9.5 14.5 11.4 23 12 14.5 12.6 12.6 14.5 12 23 11.4 14.5 9.5 12.6 1 12 9.5 11.4 11.4 9.5 12 1z'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12 1C12.6 9.5 14.5 11.4 23 12 14.5 12.6 12.6 14.5 12 23 11.4 14.5 9.5 12.6 1 12 9.5 11.4 11.4 9.5 12 1z'/%3E%3C/svg%3E") center/contain no-repeat}
+.stage-nav button{display:inline-flex;align-items:center;gap:10px;background:none;border:none;cursor:pointer;color:var(--text-2);font-size:14px;padding:6px 4px;border-radius:10px;text-align:left}
+.stage-nav button:hover{color:var(--text)}
+.stage-nav button svg{width:18px;height:18px}
+.stage-nav button svg.gem{width:30px;height:30px}
+.stage-nav small{display:block;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.stage-nav [hidden]{display:none!important}
+.stage-nav button:last-child{margin-left:auto}
+.flow-arrow{pointer-events:none}
+
+/* detail view */
+.scrim{position:fixed;inset:0;z-index:30;background:rgba(6,7,18,.72);backdrop-filter:blur(4px);display:grid;place-items:center;
+  padding:max(20px, env(safe-area-inset-top, 0px)) max(16px, env(safe-area-inset-right, 0px)) max(20px, env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));animation:fade .2s}
+.sheet{width:min(820px,100%);max-height:100%;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:22px;box-shadow:0 30px 80px rgba(0,0,0,.55);animation:rise .25s cubic-bezier(.2,.8,.2,1)}
+.sheet-bar{position:sticky;top:0;z-index:2;display:flex;align-items:center;gap:10px;padding:12px 14px 12px 16px;background:var(--surface);border-bottom:1px solid var(--line)}
+.crumbs{flex:1;min-width:0;display:flex;align-items:center;gap:6px;font-size:13px;color:var(--mute);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.crumbs b{color:var(--text-2);font-weight:500;overflow:hidden;text-overflow:ellipsis}
+.crumbs svg{width:12px;height:12px;flex:none}
+.back-btn{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--bg);border-radius:999px;padding:6px 12px 6px 9px;font-size:13px;font-weight:600;cursor:pointer;flex:none;max-width:52%;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.back-btn:hover{border-color:var(--accent);color:var(--accent)}
+.back-btn svg{width:15px;height:15px;flex:none}
+.icon-btn{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:transparent;display:grid;place-items:center;cursor:pointer;flex:none}
+.icon-btn:hover{border-color:var(--text-2)}
+.icon-btn svg{width:16px;height:16px}
+.sheet-body{padding:24px 26px 26px}
+.s-head{display:grid;grid-template-columns:64px 1fr;gap:16px;align-items:center}
+.s-badge{width:64px;height:64px;border-radius:18px;display:grid;place-items:center;color:var(--c);background:color-mix(in srgb, var(--c) 14%, var(--bg));border:1.5px solid color-mix(in srgb, var(--c) 60%, transparent)}
+.s-badge svg{width:30px;height:30px}
+.s-head h2{font-family:var(--f-display);font-weight:400;font-size:clamp(26px,3.6vw,34px);line-height:1.1;margin:0 0 6px;text-wrap:balance}
+.pills{display:flex;flex-wrap:wrap;gap:6px}
+.pill{display:inline-flex;align-items:center;gap:5px;font-family:var(--f-mono);font-size:11px;letter-spacing:.05em;text-transform:uppercase;border-radius:999px;padding:3px 9px;border:1px solid var(--line);color:var(--text-2)}
+.pill svg{width:12px;height:12px}
+.pill.track{color:var(--c);border-color:color-mix(in srgb, var(--c) 50%, transparent)}
+.pill.done{color:var(--text);border-color:var(--text)}
+.pill.active{color:var(--accent);border-color:var(--accent)}
+.summary{font-size:17px;margin:18px 0 0;max-width:62ch}
+.flow{margin-top:20px;display:grid;grid-template-columns:1fr 28px 1fr 28px 1fr;align-items:stretch;gap:8px}
+.flow-col{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:10px 12px 12px;min-width:0}
+.flow-col.me{border-color:var(--accent)}
+.flow-col .k{font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute);margin-bottom:8px}
+.flow-col.me .k{color:var(--accent)}
+.flow-col .me-name{font-weight:600;font-size:14px}
+.flow-arrow{display:grid;place-items:center;color:var(--mute)}
+.flow-arrow svg{width:18px;height:18px}
+.links{display:grid;gap:6px}
+.lnk{display:flex;align-items:center;gap:8px;width:100%;text-align:left;border:1px solid var(--line);background:var(--surface);border-radius:10px;padding:7px 9px;font-size:13px;font-weight:500;cursor:pointer;min-width:0}
+.lnk span{min-width:0;overflow:hidden;text-overflow:ellipsis}
+.lnk svg{width:15px;height:15px;flex:none;color:var(--c)}
+.lnk:hover{border-color:var(--c)}
+.lnk .go{margin-left:auto;color:var(--mute);width:13px;height:13px}
+.lnk.gate-lnk{--c:var(--accent);color:var(--accent)}
+.lnk.plain{cursor:default;color:var(--mute);--c:var(--mute)}
+.lnk.plain:hover{border-color:var(--line)}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:24px}
+.sec h4{margin:0 0 8px;font-family:var(--f-mono);font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);font-weight:500}
+.sec p{margin:0;color:var(--text-2)}
+.sec ol{margin:0;padding:0;list-style:none;counter-reset:s;display:grid;gap:9px}
+.sec ol li{counter-increment:s;display:grid;grid-template-columns:24px 1fr;gap:8px;color:var(--text-2)}
+.sec ol li::before{content:counter(s);width:22px;height:22px;border-radius:50%;border:1px solid var(--line);display:grid;place-items:center;font-family:var(--f-mono);font-size:11px;color:var(--text);margin-top:1px}
+.done-when{margin-top:22px;display:grid;grid-template-columns:22px 1fr;gap:10px;padding:14px 16px;border-radius:14px;background:var(--bg);border:1px solid var(--line)}
+.done-when svg{width:20px;height:20px;color:var(--accent);margin-top:1px}
+.done-when b{display:block;font-family:var(--f-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mute);font-weight:500;margin-bottom:2px}
+.pager{display:flex;justify-content:space-between;gap:12px;padding:14px 18px;border-top:1px solid var(--line)}
+.pager button{display:inline-flex;align-items:center;gap:8px;background:none;border:none;cursor:pointer;color:var(--text-2);font-size:13.5px;padding:6px;border-radius:8px;text-align:left;min-width:0}
+.pager button:hover{color:var(--text)}
+.pager button svg{width:16px;height:16px;flex:none}
+.pager small{display:block;font-family:var(--f-mono);font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.pager [hidden]{display:none!important}
+.pager button:last-child{margin-left:auto}
+table.br{width:100%;border-collapse:collapse;margin-top:10px;font-size:13.5px}
+table.br td{padding:8px 0;border-bottom:1px solid var(--line);vertical-align:top}
+table.br td.a{text-align:right;font-family:var(--f-body);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap;padding-left:12px}
+table.br .src{display:block;color:var(--mute);font-size:12px}
+table.br tr.tot td{border-bottom:none;font-weight:700}
+.est{font-family:var(--f-mono);font-size:10px;color:var(--accent);border:1px solid color-mix(in srgb, var(--accent) 40%, transparent);border-radius:4px;padding:0 4px;margin-left:6px;vertical-align:1px}
+.foot{margin-top:26px;text-align:center;font-family:var(--f-mono);font-size:11px;color:var(--mute)}
+
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes twinkle{0%,100%{opacity:.55;transform:scale(.85)}50%{opacity:1;transform:scale(1.1)}}
+.pulse{transform-box:fill-box;transform-origin:center;animation:twinkle 2.4s ease-in-out infinite}
+
+@media (max-width:960px){
+  .stage-grid{grid-template-columns:1fr}
+  .gate{position:static}
+}
+@media (max-width:720px){
+  .stepper{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .stepper::before,.stepper .lit{display:none}
+  .stage{padding:20px 16px;border-radius:18px}
+  .hero{grid-template-columns:72px 1fr;gap:14px;padding-bottom:24px}
+  .when{grid-column:1/-1;align-items:flex-start;padding-left:0;text-align:left}
+  .when-stack{flex-direction:row;align-items:baseline;gap:10px}
+  .when-num{font-size:30px}
+  .hero-gem{width:72px;height:72px;border-radius:18px}
+  .hero-gem svg{width:58px;height:58px}
+  .row{grid-template-columns:44px 1fr;gap:10px}
+  .flow{grid-template-columns:1fr}
+  .flow-arrow{transform:rotate(90deg);height:18px}
+  .cols{grid-template-columns:1fr}
+  .sheet-body{padding:20px 18px 22px}
+  .s-head{grid-template-columns:52px 1fr;gap:12px}
+  .s-badge{width:52px;height:52px;border-radius:14px}
+  .scrim{place-items:end center;padding-bottom:0}
+  .sheet{border-radius:22px 22px 0 0;max-height:92vh}
+}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+<style>
+/* site navigation bar, same as the other pages; kept in its own block so the roadmap's own styles are untouched */
+.nav{position:relative;z-index:20;background:color-mix(in srgb, var(--bg) 78%, transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid color-mix(in srgb, var(--line) 60%, transparent)}
+.nav .spark{display:inline-block;width:1em;height:1em;flex:none}
+.nav-in{max-width:1180px;margin:0 auto;padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:12px;display:flex;align-items:center;gap:20px}
+.nav a{color:inherit;text-decoration:none}
+.nav .logo{display:inline-flex;align-items:center;gap:10px;font-family:var(--f-display);font-size:19px;line-height:1;white-space:nowrap}
+.nav .logo .spark{width:20px;height:20px;color:var(--accent)}
+.nav-links{display:flex;align-items:center;gap:4px;margin-left:auto;list-style:none;padding:0;margin-block:0}
+.nav-links a{display:inline-flex;align-items:center;gap:7px;font-size:14px;font-weight:500;color:var(--text-2);padding:7px 11px;border-radius:999px;transition:color .2s, background .2s}
+.nav-links a .spark{width:10px;height:10px;color:var(--c);opacity:.85}
+.nav-links a:hover{color:var(--text);background:color-mix(in srgb, var(--surface) 70%, transparent)}
+.nav-links a[aria-current="page"]{color:var(--text);background:var(--surface)}
+.menu-btn{display:none;margin-left:auto;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 14px 7px 11px;font-size:13.5px;font-weight:600;cursor:pointer}
+.menu-btn svg{width:16px;height:16px}
+.nav .menu{position:absolute;left:0;right:0;top:100%;background:var(--surface);border-bottom:1px solid var(--line);padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px));padding-block:8px 14px;box-shadow:0 20px 40px rgba(0,0,0,.45)}
+.nav .menu a{display:grid;grid-template-columns:28px 1fr auto;align-items:center;gap:10px;padding:11px 4px;border-bottom:1px solid var(--line)}
+.nav .menu a:last-child{border-bottom:none}
+.nav .menu .spark{width:16px;height:16px;color:var(--c)}
+.nav .menu b{font-weight:600}
+.nav .menu small{font-family:var(--f-mono);font-size:11px;color:var(--mute)}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom, 0px));transform:translateX(-50%);z-index:50;display:inline-flex;align-items:center;gap:9px;background:var(--surface-2);border:1px solid var(--line);border-radius:999px;padding:10px 16px 10px 12px;font-size:14px;box-shadow:0 12px 32px rgba(0,0,0,.45)}
+.toast .spark{width:14px;height:14px;color:var(--accent)}
+@media (max-width:900px){.nav-links{display:none}.menu-btn{display:inline-flex}}
+</style>
+
+<canvas id="sparkles" aria-hidden="true"></canvas>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs id="sprite"></defs></svg>
+
+<header class="nav" id="nav"></header>
+<div class="wrap">
+  <header class="top">
+    <div>
+      <div class="eyebrow">Where we're going</div>
+      <h1>From side project to silver brand</h1>
+    </div>
+  </header>
+
+  <ol class="stepper" id="stepper" aria-label="Stages"></ol>
+
+  <main class="stage" id="stage" aria-live="polite"></main>
+
+</div>
+
+<div id="detail" hidden></div>
+
+<script src="assets/content.js"></script>
+<script src="assets/site.js"></script>
+<script>SSL.renderNav("roadmap");</script>
+<script>
+/* ===================== Data =====================
+   Change a status here: "done" | "active" | "todo"   */
+const TRACKS = {
+  make:{label:"Make",icon:"gem"}, sell:{label:"Sell",icon:"cart"}, story:{label:"Story",icon:"camera"},
+  money:{label:"Money",icon:"coins"}, people:{label:"People",icon:"people"}, run:{label:"Run",icon:"steps"}
+};
+
+const STAGES = [
+{ id:"groundwork", name:"Groundwork", months:"Months 0–1", gem:"ore",
+  goal:"Know who you are, who you sell to, and what each piece costs.",
+  about:"Before selling anything, get the basics on paper: the brand and its customer, how the business runs, a small first collection, and the real cost of every piece.",
+  milestones:[
+    {id:"intake", name:"Business idea written down", track:"story", icon:"doc", status:"done",
+     short:"Product, customer, money and risks answered.",
+     why:"Every later decision — prices, channels, who to hire — checks back against this page.",
+     steps:["Answer the ★ questions in Business Idea Intake","Note anything you're unsure of as a question to test later"],
+     done:"Every ★ question in the Intake has an answer."},
+    {id:"brand", name:"Brand foundation", track:"story", icon:"spark4", status:"done", needs:["intake"],
+     short:"Name, tagline, values, voice and look, written down.",
+     why:"Every post, parcel and agent draws from this page, so the brand sounds the same whoever is talking.",
+     steps:["Answer the Foundation Questions","Agree the Brand Foundation page"],
+     done:"Name, tagline, values, voice and visual direction are decided."},
+    {id:"customer", name:"Customer and value proposition", track:"sell", icon:"person", status:"done", needs:["intake"],
+     short:"Who we sell to and why they'd buy, as guesses to test.",
+     why:"The canvas becomes your interview script, and the interviews correct the canvas.",
+     steps:["Fill the Value Proposition Canvas","Write the Target Customer reasoning"],
+     done:"Canvas v1 and Target Customer pages exist."},
+    {id:"opmodel", name:"Operating model", track:"run", icon:"compass", status:"done", needs:["intake"],
+     short:"What AI does, what people do, and when that changes.",
+     why:"Deciding this early changes who you hire later: people for hands and taste, agents for repeat work.",
+     steps:["Agree the Operating Model page","Add \"Done by\" to every job in Roles & Responsibilities"],
+     done:"Every job has a \"Done by\"."},
+    {id:"assistant", name:"AI assistant", track:"run", icon:"sparkle", status:"todo", needs:["opmodel"],
+     short:"A weekly brief: what's due, what's stuck, and ideas you hadn't planned.",
+     why:"A second pair of eyes on the whole business every week, at no extra cost.",
+     steps:["Set up a weekly scheduled task in this Claude Project","It reads HQ, Roadmap and Validation Log","Adjust what it reports after 2 weeks"],
+     done:"4 weekly briefs received and used."},
+    {id:"inventory", name:"Tool inventory", track:"money", icon:"tools", status:"active", needs:["intake"],
+     short:"List every tool you own, what it cost and how long it lasts.",
+     why:"Tools wear out. Spreading their cost over the pieces you make is the only way your prices cover them.",
+     steps:["Open Tools & Supplies","Mark each row Have it or Need to buy","For owned items, fill Unit cost and Lasts (months)","Turn on Sum for the Cost per month column"],
+     done:"Every row has a status, and owned rows have a cost and lifespan."},
+    {id:"collection", name:"First mini-collection", track:"make", icon:"gem", status:"todo", needs:["intake"],
+     short:"3–5 designs, 5–10 samples, 1–2g each.",
+     why:"Silver clay costs about 200,000₫ per gram, so light pieces keep both cost and price friendly. A small matching set looks intentional and gives you something to film and pre-sell.",
+     steps:["Pick one theme: botanical or celestial","Design 3–5 pieces at 1–2g each","Make 5–10 samples and weigh each after firing","Log the weights in Product Costing"],
+     done:"5–10 finished samples, each weighed and costed."},
+    {id:"name", name:"Claim the name", track:"story", icon:"tag", status:"todo", needs:["brand"],
+     short:"Claim Starring Silver Lab on Instagram, TikTok and a domain.",
+     why:"The name is decided. One spelling everywhere is the first thing that makes a small shop look real.",
+     steps:["Check the handle on Instagram and TikTok, and a domain","Claim the \"staring\" misspelling too if it's free","Check no one has trademarked the name"],
+     done:"The same handle is claimed on both platforms."},
+    {id:"visuals", name:"Brand visuals v1", track:"story", icon:"pen", status:"todo", needs:["brand"],
+     short:"Moodboard, accent color, fonts and a first star mark.",
+     why:"A generic star isn't a brand. A mark traced from your own silver star is. Version 1 is enough to start; it doesn't block posting.",
+     steps:["Collect a moodboard (Claude can help)","Pick the accent color and fonts","Sculpt an imperfect 4-point star in silver clay, fire and photograph it","Trace it into a vector mark"],
+     done:"Accent, fonts and a v1 star mark are in Brand Foundation."},
+    {id:"nguyen", name:"Talk with Nguyen", track:"people", icon:"people", status:"todo", needs:["intake"],
+     short:"Agree what she'd do and how many hours, or that it's not yet.",
+     why:"The plan works without her. Knowing early lets you plan content and channels honestly.",
+     steps:["Fill Hours / week in Roles & Responsibilities","Walk her through the roles proposed for her","Agree a yes, a no, or a date to decide"],
+     done:"A clear answer is written in Roles & Responsibilities."},
+    {id:"reviews", name:"Review mining", track:"sell", icon:"list", status:"todo", needs:["customer"],
+     short:"Learn what buyers love and complain about from other shops' reviews.",
+     why:"Thousands of buyers have already said what they think. Reading it costs no conversations.",
+     steps:["Claude collects reviews and comments from 5–10 handmade silver shops (Shopee, TikTok, Instagram)","Sort them into loves, complaints and prices paid","Update the Value Proposition Canvas"],
+     done:"A review summary is saved and the canvas is updated."},
+    {id:"truecost", name:"True cost per piece", track:"money", icon:"scale", status:"todo", needs:["inventory","collection"],
+     short:"The full cost of each sample, not just the silver.",
+     why:"Sample 2 (1.5g, sold at 499,000₫) makes about 23% profit before chain and packaging are counted. The target is 30%. You can't fix a price you can't see.",
+     steps:["Overhead per piece = monthly tool cost ÷ pieces planned per month","Enter it in Product Costing","Add chain, jump rings, cord and packaging to each piece","Flag any piece below 30% profit"],
+     done:"Every sample shows its true cost and margin in Product Costing."},
+    {id:"quotes", name:"Casting quotes", track:"make", icon:"mold", status:"todo", needs:["collection"],
+     short:"Ask 2–3 workshops what a 925 copy of one sample costs.",
+     why:"Cast 925 metal costs about a quarter of silver clay per gram. These quotes decide how profitable a future cast line can be.",
+     steps:["Send the Zalo draft from the casting research page","Ask for price per gram or piece, metal loss, mold fee, minimum order and turnaround","Record the answers in Tools & Supplies → Casting service"],
+     done:"At least one real quote is recorded."},
+    {id:"videos", name:"First 3 process videos", track:"story", icon:"video", status:"todo", needs:["name","collection"],
+     short:"Hands-only videos of making a real piece.",
+     why:"People trust what they see being made. Process videos build an audience before you have anything to sell.",
+     steps:["Film shaping, firing and polishing one piece","Hands only, natural light, real pieces","Post all three within two weeks"],
+     done:"3 videos are posted."},
+    {id:"videdit", name:"Video editing test", track:"story", icon:"cycle", status:"todo", needs:["collection"],
+     short:"Try an AI editor on your first process videos.",
+     why:"Editing is the slowest part of posting. Find out early how much a tool can take off you.",
+     steps:["Rough-cut the first 3 videos in CapCut (free)","Note the time saved and what still needed you","Pay for a tool only if it clearly saves time"],
+     done:"You know which tool to use, or that none is worth it yet."}
+  ],
+  gate:{checks:["5–10 samples made and weighed","True cost and margin known for every sample","At least 1 casting quote","Brand visuals v1: accent, fonts and a star mark"],
+        note:"No fund needed. The 1,000,000₫ monthly budget covers this stage."}
+},
+{ id:"test", name:"Test the market", months:"Months 1–3", gem:"geode",
+  goal:"Prove that strangers will pay your real price.",
+  about:"Hear from real buyers by text, post on a steady rhythm, set up payments people trust, and run one small pre-order drop. The result decides whether you go on, adjust, or stop.",
+  milestones:[
+    {id:"interviews", name:"Survey and DM chats", track:"sell", icon:"chat", status:"todo",
+     short:"A 5-question survey, plus text chats with 5 people who engage.",
+     why:"Posts tell you what people like. Asking tells you what they'd pay and why they'd hesitate. Text keeps it easy.",
+     steps:["Claude drafts a 5-question survey from the canvas","Share it in your stories and 2–3 relevant groups","DM 5 people who save or comment, by text","Log answers in the Validation Log"],
+     done:"15+ survey answers and 5 DM chats are logged."},
+    {id:"posting", name:"Post 3 times a week", track:"story", icon:"camera", status:"todo",
+     short:"Four weeks of steady posting, tracking what gets saved.",
+     why:"Saves, shares and DMs are free demand data. They tell you which pieces belong in the drop.",
+     steps:["Post making, finished pieces and styling, three times a week","Each week, note saves, shares and DMs per piece"],
+     done:"4 weeks posted, and your top 3 pieces by saves are known."},
+    {id:"contentagent", name:"Content agent", track:"run", icon:"pen", status:"todo", needs:["posting"],
+     short:"Claude drafts captions and content ideas in your voice.",
+     why:"Posting 3 times a week on weekend hours is hard. Drafts make it possible.",
+     steps:["Write captions by hand for 2 weeks","Turn that into a caption SOP","Claude drafts from it; you approve every post"],
+     done:"2 weeks of posts drafted by Claude and approved by you."},
+    {id:"care", name:"Packaging and care guide", track:"make", icon:"tag", status:"todo",
+     short:"Simple packaging and a QR code to an online care guide.",
+     why:"No throwaway packaging. Care that lasts longer than a box does.",
+     steps:["Pick minimal, low-waste packaging","Write the care guide as a public page","Put the QR on a small tag or sticker"],
+     done:"The first order ships with it."},
+    {id:"trust", name:"Payment and trust setup", track:"money", icon:"shield", status:"todo",
+     short:"A deposit rule, plus proof you're a real shop.",
+     why:"Made-to-order needs payment upfront, and scams make buyers wary of transferring money. Clear rules and visible proof lower that fear.",
+     steps:["Standard pieces: a deposit that covers the silver, about half the price (your call)","Custom one-offs: 100% upfront, as the house rules say","Show a VietQR code in the business name","Send a written order confirmation and progress photos"],
+     done:"The deposit rule is written down and an order confirmation template is ready."},
+    {id:"bizacct", name:"Business account", track:"money", icon:"wallet", status:"todo",
+     short:"Keep business money separate from personal money.",
+     why:"Separate money shows your real profit, and it's where each stage's unlock fund builds up.",
+     steps:["Open a separate bank account or e-wallet","Run every sale and purchase through it"],
+     done:"Your first sale lands in the business account."},
+    {id:"custom", name:"Custom orders", track:"make", icon:"pen", status:"todo",
+     short:"Say yes to custom pieces at any stage, paid in full first.",
+     why:"Customs are good income at every stage. Full payment upfront protects the silver you buy for them.",
+     steps:["Quote from weight × silver price + your time","Take 100% before starting","Log each one in Product Costing"],
+     done:"A custom-order quote template is ready."},
+    {id:"ordersop", name:"Order process (SOP)", track:"run", icon:"steps", status:"todo", needs:["trust"],
+     short:"Write down every step from order to shipping.",
+     why:"Written steps are what someone else will follow later, when you hand off making and packing.",
+     steps:["Fulfil 3 orders","Write the steps with the write-sop skill","Save it in Roles & Responsibilities"],
+     done:"The SOP is saved and used on the next order."},
+    {id:"drop", name:"First pre-order drop", track:"sell", icon:"box", status:"todo", needs:["interviews","posting","trust","care"],
+     short:"10–20 pieces, sold at your real price.",
+     why:"The real test is strangers paying full price. Orders from friends don't count toward the gate.",
+     steps:["Pick 3–5 pieces from your most-saved posts","Announce a week ahead and open pre-orders for a set window","Time it before a gift season"],
+     done:"The drop is closed, with sales split into strangers and friends."},
+    {id:"review", name:"Go, adjust or stop", track:"run", icon:"compass", status:"todo", needs:["drop","ordersop"],
+     short:"Compare the results with the gate and decide.",
+     why:"Deciding against numbers you set in advance stops hope from making the call.",
+     steps:["Check each item in the stage gate","Write the decision and the reason in the HQ decisions log"],
+     done:"The decision is logged."},
+    {id:"brandv2", name:"Brand and canvas v2", track:"story", icon:"spark4", status:"todo", needs:["interviews","drop"],
+     short:"Update the brand and canvas with what customers said.",
+     why:"Version 1 was a guess. After the conversations and the first drop, you know.",
+     steps:["Compare survey, DM and drop results with the canvas","Update Brand Foundation, Value Proposition Canvas and Target Customer"],
+     done:"Version 2 of all three pages."}
+  ],
+  gate:{checks:["10+ sales to strangers at the target price","1 repeat buyer or referral","3+ DMs a week from strangers","Every sale covers silver, findings, packaging and your time"],
+    fund:[
+      {item:"Rotary tumbler + steel shot", amt:1500000, est:true},
+      {item:"Light box + backdrops", amt:400000, est:true},
+      {item:"Packaging for 50 orders", amt:750000, est:true, src:"about 15,000₫ an order"},
+      {item:"Website domain, 1 year", amt:350000, est:true}
+    ]}
+},
+{ id:"sideshop", name:"Side shop", months:"Months 4–9", gem:"crystal",
+  goal:"Run a steady small shop with a monthly rhythm.",
+  about:"Open your own website, fix every price to reach 30% profit, and release one small drop each month. Along the way, find the three designs that keep selling.",
+  milestones:[
+    {id:"website", name:"Own website", track:"sell", icon:"globe", status:"todo",
+     short:"A catalog, an order form and VietQR payments.",
+     why:"A website makes a small brand look established and keeps repeat buyers away from marketplace fees. Traffic still comes from your content.",
+     steps:["Build it yourself and host it on GitHub Pages","Add an order form and a VietQR payment link (payOS is one option)","Link it from every profile"],
+     done:"The first order comes in through the site."},
+    {id:"kit", name:"Tumbler and photo setup", track:"make", icon:"cycle", status:"todo",
+     short:"Faster polishing and consistent product photos.",
+     why:"A tumbler polishes and hardens a whole batch while you do other work. A light box makes every listing look the same.",
+     steps:["Price both in Tools & Supplies","Buy them from the unlock fund","Reshoot your current pieces"],
+     done:"Every listing uses the new photos."},
+    {id:"pricing", name:"Fix the margins", track:"money", icon:"percent", status:"todo",
+     short:"Every piece at 30% profit or more.",
+     why:"At 35,000₫ an hour, Sample 2 needs about 546,000₫ to reach 30%. At 100,000₫ an hour it needs about 686,000₫. Clay at 200,000₫/g can't absorb marketplace fees.",
+     steps:["Raise the hourly rate in Product Costing","Reprice, make pieces lighter, or plan them for casting","Check that no piece is flagged below 30%"],
+     done:"No piece is below 30% in Product Costing."},
+    {id:"pulse", name:"Weekly numbers", track:"run", icon:"chart", status:"todo",
+     short:"Claude pulls orders, profit and hours every Sunday.",
+     why:"Every gate from here on is a number. Fifteen minutes a week means you always know where you stand.",
+     steps:["Claude records orders, revenue, profit and hours","You compare them with the next gate"],
+     done:"8 weeks in a row are recorded."},
+    {id:"nguyen2", name:"Nguyen: in or out", track:"people", icon:"people", status:"todo",
+     short:"Decide her role for the next year.",
+     why:"The next stage adds stock and money. Ownership and hours need to be in writing before that.",
+     steps:["Review her hours so far","Agree role, hours and any ownership in writing (photos, video, partnerships, pop-ups, reviewing agent drafts)","If she's in: move to a shared Claude business plan and Notion workspace"],
+     done:"A written agreement, or a clear no."},
+    {id:"drops", name:"Monthly drop", track:"make", icon:"calendar", status:"todo", needs:["website"],
+     short:"One small themed release each month.",
+     why:"A rhythm gives followers a reason to come back and keeps your making predictable.",
+     steps:["Pick a theme for each month","Announce it a week ahead","Make to pre-order or in a small batch"],
+     done:"3 drops released on schedule."},
+    {id:"loop", name:"Repeat-buyer loop", track:"sell", icon:"repeat", status:"todo", needs:["drops"],
+     short:"A care guide QR and a referral perk in every order.",
+     why:"Repeat buyers and referrals are the cheapest sales you'll ever make.",
+     steps:["Every order has the care guide QR and your handle","Offer a small perk for a referral","Track repeat buyers in the weekly numbers"],
+     done:"The first sale from a referral."},
+    {id:"replyagent", name:"Customer reply agent", track:"run", icon:"chat", status:"todo",
+     short:"Claude drafts replies; routine ones go out on their own.",
+     why:"DMs pile up once drops are monthly. Routine questions shouldn't wait for you.",
+     steps:["Collect your most common questions and best answers","Claude drafts every reply for 4 weeks","Then FAQ and order-status replies go out alone"],
+     done:"Routine replies go out without you; money, refunds and custom orders still come to you."},
+    {id:"logo", name:"Logo refined", track:"story", icon:"spark4", status:"todo",
+     short:"Polish the star mark into a full logo set.",
+     why:"With real sales coming in, the brand is worth a proper finish, after months of seeing the v1 mark in use.",
+     steps:["Review how the v1 mark works on posts, packaging and the website","Refine it yourself or with a designer","Make versions for profile, packaging, stamp and website"],
+     done:"The final logo set is in Brand Foundation."},
+    {id:"best", name:"Find 3 best-sellers", track:"make", icon:"crown", status:"todo", needs:["drops","pulse"],
+     short:"The designs that sell again and again.",
+     why:"These become your cast line. Proven demand is what justifies paying for molds.",
+     steps:["Rank designs by repeat orders over 3 months","Pick the top 3"],
+     done:"3 best-sellers are named."}
+  ],
+  gate:{checks:["20+ orders a month, 3 months in a row","3 best-sellers identified","Every piece priced at 30%+ profit"],
+    fund:[
+      {item:"Rubber molds for 3 best-sellers", amt:1000000, est:true, src:"confirm in casting quotes"},
+      {item:"First stock: 24 pieces × 2g of 925", amt:2524800, src:"925 at about 52,600₫/g"},
+      {item:"Casting fees", amt:1200000, est:true, src:"confirm in casting quotes"},
+      {item:"Chains and findings for stock", amt:1440000, est:true},
+      {item:"Wax carving kit", amt:565400, src:"casting research page"},
+      {item:"Accountant, 3 months", amt:1470000, src:"from 490,000₫ a month"},
+      {item:"Shipping and returns buffer", amt:1000000, est:true}
+    ]}
+},
+{ id:"castline", name:"Cast line", months:"Months 10–15", gem:"cabochon",
+  goal:"Turn best-sellers into 925 pieces that are ready to ship.",
+  about:"Outsource casting of your best-sellers, keep a small stock, ship cash on delivery and open a marketplace shop. Register the business once orders are steady.",
+  milestones:[
+    {id:"molds", name:"Cast your best-sellers", track:"make", icon:"mold", status:"todo",
+     short:"925 copies made from your finished pieces.",
+     why:"Metal drops from about 200,000₫/g in silver clay to about 52,600₫/g in 925. This is what makes the margins work.",
+     steps:["Send your 3 best-seller masters to the casting shop","Approve a first sample of each","Label honestly: designed and finished by hand, cast in 925"],
+     done:"An approved cast sample for each best-seller."},
+    {id:"register", name:"Register the business", track:"run", icon:"doc", status:"todo",
+     short:"A household business, once orders are steady.",
+     why:"Revenue under 1 billion ₫ a year is tax-free, but a registered household business must file even in months with no sales. So register once sales are regular.",
+     steps:["Register a household business","Hand filing to an accountant"],
+     done:"Registration is done."},
+    {id:"film", name:"Filming kit", track:"story", icon:"video", status:"todo",
+     short:"A light, a tripod and a macro lens.",
+     why:"Better video in the same hands-only style. Always real photos of the real piece.",
+     steps:["Price the kit in Tools & Supplies","Reshoot your best-sellers"],
+     done:"Best-seller videos are reshot."},
+    {id:"stock", name:"Small ready stock", track:"make", icon:"box", status:"todo", needs:["molds"],
+     short:"5–10 of each best-seller on hand.",
+     why:"Ready stock means instant shipping and makes cash on delivery possible.",
+     steps:["Order 5–10 of each best-seller","Reorder when a design drops to 2 pieces"],
+     done:"Stock on hand for all 3 designs."},
+    {id:"range", name:"Bracelets and rings", track:"make", icon:"ring", status:"todo", needs:["molds"],
+     short:"New categories, carved in wax.",
+     why:"Rings and crisp shapes are easier to carve in wax than to sculpt in clay, and casting is already outsourced.",
+     steps:["Buy the wax carving kit (about 565,000₫)","Carve 1–2 rings and have them cast"],
+     done:"One ring design is for sale."},
+    {id:"accountant", name:"Accountant", track:"money", icon:"coins", status:"todo", needs:["register"],
+     short:"Tax filing handled for you.",
+     why:"Household-business accounting starts around 490,000₫ a month and gives your hours back to making and selling.",
+     steps:["Compare 2–3 services","Send them sales and purchase records every month"],
+     done:"The first filing is done by the accountant."},
+    {id:"cod", name:"Cash on delivery", track:"sell", icon:"truck", status:"todo", needs:["stock"],
+     short:"Buyers pay when the parcel arrives.",
+     why:"It removes the prepay worry for stock pieces. GHTK and GHN collect COD for free (about 5,500₫ per payout). The risk becomes a returned parcel, not lost silver.",
+     steps:["Open a GHTK or GHN shop account","Offer COD on stock pieces only"],
+     done:"The first COD order is delivered."},
+    {id:"tiktok", name:"TikTok Shop", track:"sell", icon:"cart", status:"todo", needs:["stock"],
+     short:"Buyer protection that brings in new buyers.",
+     why:"Marketplaces take roughly a fifth of the price (TikTok Shop charges a 6% transaction fee plus a category commission). Cast pieces can carry that. Keep the website for repeat buyers.",
+     steps:["Price cast pieces to cover the fees","List stock pieces only","Point repeat buyers to your website"],
+     done:"The first marketplace sale."}
+  ],
+  gate:{checks:["Profit of 8,000,000₫+ a month, 3 months in a row","Cast pieces are at least half of all orders","Business registered, books up to date"],
+    fund:[
+      {item:"Lab kiln 1000°C (fires clay, burns out wax)", amt:7800000, src:"Shopee listing, Oct 2026"},
+      {item:"Workshop tool sets × 4", amt:3200000, est:true},
+      {item:"Silver clay stock, 20g", amt:4000000, src:"200,000₫/g"},
+      {item:"Room rent, 3 months (if Tabi's corner isn't free)", amt:9000000, src:"about 3,000,000₫ a month for 20m²"},
+      {item:"Accountant, 3 months", amt:1470000}
+    ]}
+},
+{ id:"studio", name:"Studio & workshops", months:"Months 16–24", gem:"brilliant",
+  goal:"Move the making out of your hands.",
+  about:"Get a real workspace and a kiln, and start make-your-own workshops. Hand repeat making to an outsourced silversmith and write an SOP for every job. At month 24, decide whether to go full-time.",
+  milestones:[
+    {id:"space", name:"A real workspace", track:"run", icon:"house", status:"todo",
+     short:"Tabi's corner first, or a small rented room.",
+     why:"Workshops and outsourced production need a fixed place for tools, stock and guests.",
+     steps:["Ask Tabi first","If not, rent a room of about 20m²","Set up a bench, storage and a 4-seat table"],
+     done:"The workspace is in use."},
+    {id:"content", name:"Content team", track:"people", icon:"camera", status:"todo",
+     short:"Nguyen or a freelancer approves agent drafts and shoots photos and video.",
+     why:"Agents draft the posts; people bring the taste and the camera.",
+     steps:["Write a content SOP","Hand off photos, video edits and approving agent drafts"],
+     done:"4 weeks posted without you."},
+    {id:"kiln", name:"Kiln", track:"make", icon:"flame", status:"todo", needs:["space"],
+     short:"Fires batches and workshop pieces.",
+     why:"The 1000°C lab kiln (about 7,800,000₫) fires silver clay and burns out wax, so it replaces a separate clay kiln.",
+     steps:["Confirm it has a programmable slow ramp","Install it with safe ventilation"],
+     done:"The first batch is fired."},
+    {id:"outsource", name:"Outsource making", track:"people", icon:"hammer", status:"todo", needs:["space"],
+     short:"A silversmith, paid per piece, makes your repeat designs.",
+     why:"You keep designing and approving while someone else makes. When this bill reaches a salary a month, hiring becomes cheaper.",
+     steps:["Write the making SOP and a quality check","Trial one workshop on one design","Track the outsourcing bill every month"],
+     done:"One design is made entirely by the outsourced maker."},
+    {id:"workshops", name:"Make-your-own workshops", track:"sell", icon:"sparkle", status:"todo", needs:["kiln"],
+     short:"Silver clay sessions with 4 seats.",
+     why:"A District 3 silver workshop starts around 950,000₫ a person, with silver charged by weight. At 200,000₫/g, 5g of clay is 1,000,000₫ of silver per guest, so charge it separately.",
+     steps:["Run 3 sessions yourself","Price the seat plus silver by weight","Write the workshop SOP"],
+     done:"3 sessions run at a profit."},
+    {id:"host", name:"Workshop host", track:"people", icon:"person", status:"todo", needs:["workshops"],
+     short:"A trained host, paid per session.",
+     why:"Workshops only free your time once someone else can run them.",
+     steps:["Train a host on the workshop SOP","Co-host once, then hand over"],
+     done:"One session runs without you."},
+    {id:"sops", name:"An SOP for every job", track:"run", icon:"steps", status:"todo", needs:["outsource","host"],
+     short:"Every job has written steps and a \"done by\": person or agent.",
+     why:"This is what lets a maker step in without you at the bench.",
+     steps:["Go through Roles & Responsibilities","Write or update each SOP","Turn repeat SOPs into agent instructions"],
+     done:"Every role has an SOP."},
+    {id:"fulltime", name:"Full-time decision", track:"money", icon:"compass", status:"todo", needs:["sops"],
+     short:"At month 24, go full-time or stay part-time.",
+     why:"Decide on the numbers: profit, the fund you've saved and your hours. Staying part-time is a valid answer.",
+     steps:["Review 6 months of weekly numbers","Check the next stage gate","Write the decision in the HQ log"],
+     done:"The decision is logged."}
+  ],
+  gate:{checks:["Outsourcing bill of 15,000,000₫+ a month, 3 months in a row","Profit of 30,000,000₫+ a month, 3 months in a row","The pro fund is saved"],
+    fund:[
+      {item:"Silversmith salary, 6 months", amt:90000000, src:"12–18M₫ a month for an experienced maker in HCMC"},
+      {item:"Employer insurance, 6 months", amt:19200000, est:true},
+      {item:"Studio rent, 3 months", amt:19500000, src:"about 6,500,000₫ a month for 40m²"},
+      {item:"Bench setup (flex shaft, oxy-gas torch, extras)", amt:5000000, est:true},
+      {item:"Studio fit-out", amt:10000000, est:true},
+      {item:"Accountant, 3 months", amt:1470000}
+    ]}
+},
+{ id:"pro", name:"Pro brand", months:"Months 25–36", gem:"ring",
+  goal:"A brand that runs while you manage it.",
+  about:"Hire your own silversmith, move into your own studio and plan collections a year ahead. You design, approve and steer in 12 hours a week or less.",
+  milestones:[
+    {id:"maker", name:"Hire your silversmith", track:"people", icon:"hammer", status:"todo",
+     short:"Your own maker, on salary.",
+     why:"Hire once outsourcing has cost about a salary for 3 months. The work already exists and a salary is cheaper.",
+     steps:["Hire from the outsourced makers you already trust","Train them on the SOPs","Keep 6 months of pay saved"],
+     done:"The maker works from the SOPs."},
+    {id:"ownstudio", name:"Own studio", track:"run", icon:"house", status:"todo",
+     short:"Bench, kiln and workshop table in one room.",
+     why:"One place for making, stock and workshops.",
+     steps:["Sign only when the fund covers 6 months of pay","Fit out the bench and workshop area"],
+     done:"The studio is open."},
+    {id:"collections", name:"4 collections a year", track:"make", icon:"calendar", status:"todo",
+     short:"A seasonal release calendar.",
+     why:"Planned collections, with monthly drops between them, keep the brand fresh and the maker busy.",
+     steps:["Plan the year's themes","Schedule design, casting and launch for each"],
+     done:"The year's calendar is set."},
+    {id:"intl", name:"Sell internationally", track:"sell", icon:"globe", status:"todo",
+     short:"An English website and an overseas marketplace.",
+     why:"Your captions are already in English. International buyers widen demand.",
+     steps:["Add international shipping","Open an overseas marketplace shop, such as Etsy"],
+     done:"The first international order."},
+    {id:"collabs", name:"Collaborations", track:"story", icon:"link", status:"todo",
+     short:"Joint drops with cafés and craft brands.",
+     why:"Partners bring their audience to yours.",
+     steps:["List 5 brands your customers love","Pitch one joint drop"],
+     done:"One collaboration is released."},
+    {id:"tax", name:"Tax above 1 billion ₫", track:"run", icon:"doc", status:"todo",
+     short:"Plan for tax once revenue passes the threshold.",
+     why:"Above 1 billion ₫ a year, VAT and personal income tax apply. A company may make more sense then.",
+     steps:["Ask the accountant which method applies","Compare a household business with a company"],
+     done:"The tax method is chosen."},
+    {id:"manager", name:"You run the brand", track:"money", icon:"spark4", status:"todo", needs:["maker","ownstudio"],
+     short:"12 hours a week or less.",
+     why:"You design, approve and steer. The maker makes, the host hosts, and the SOPs hold it together.",
+     steps:["Weekly review with the maker","Monthly numbers and decisions"],
+     done:"4 weeks in a row at 12 hours or less."}
+  ],
+  gate:{final:true, checks:["A maker makes the pieces","Every job has an SOP","You work 12 hours a week or less","Profit covers costs, with 6 months saved"]}
+}
+];
+
+/* ===================== Icons and gems ===================== */
+const ICONS = {
+  doc:"M7 3h7l4 4v14H7z M14 3v4h4 M9.5 12h6 M9.5 15.5h6",
+  tools:"M14.5 6.5a4 4 0 0 0-5 5L4 17l3 3 5.5-5.5a4 4 0 0 0 5-5l-2.5 2.5-2.5-.5-.5-2.5z",
+  scale:"M12 4v16 M7 20h10 M5 8h14 M5 8l-2.5 6a2.5 2.5 0 0 0 5 0z M19 8l-2.5 6a2.5 2.5 0 0 0 5 0z",
+  gem:"M6 4h12l3 5-9 11L3 9z M3 9h18 M9 4l3 16 M15 4l-3 16",
+  mold:"M9 3h6 M10 3v5l-5 9a2.5 2.5 0 0 0 2.2 3.7h9.6A2.5 2.5 0 0 0 19 17l-5-9V3 M7.5 14h9",
+  tag:"M3 12V4h8l10 10-8 8z M7.5 7.5h.01",
+  video:"M3 7h12v10H3z M15 10.5l6-3.5v10l-6-3.5",
+  people:"M9 11a3.2 3.2 0 1 0 0-6.4 3.2 3.2 0 0 0 0 6.4z M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6 M16 5.2a3 3 0 0 1 0 5.6 M18 14.5c1.8.8 3 2.6 3 4.5",
+  person:"M12 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7z M5 21c0-3.9 3.1-7 7-7s7 3.1 7 7",
+  list:"M9 6h11 M9 12h11 M9 18h11 M4.5 6h.01 M4.5 12h.01 M4.5 18h.01",
+  chat:"M4 5h16v11H9l-5 4z M8 9.5h8 M8 12.5h5",
+  camera:"M4 8h3.5L9 5.5h6L16.5 8H20v11H4z M12 16.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6z",
+  shield:"M12 3l7 3v5c0 4.5-3 8.2-7 10-4-1.8-7-5.5-7-10V6z M9 12l2 2 4-4",
+  wallet:"M4 7h14a2 2 0 0 1 2 2v9H4z M4 7V5.5A1.5 1.5 0 0 1 5.5 4H16v3 M16 12.5h4",
+  steps:"M3 20h5v-5h5v-5h5V5h3",
+  pen:"M15 4l5 5L9 20H4v-5z M13 6l5 5",
+  box:"M3 8l9-4 9 4v9l-9 4-9-4z M3 8l9 4 9-4 M12 12v9",
+  compass:"M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z M15.5 8.5l-2 5-5 2 2-5z",
+  globe:"M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18z M3 12h18 M12 3c2.5 2.6 3.8 5.6 3.8 9s-1.3 6.4-3.8 9c-2.5-2.6-3.8-5.6-3.8-9S9.5 5.6 12 3z",
+  cycle:"M20 12a8 8 0 0 1-14 5.3 M4 12a8 8 0 0 1 14-5.3 M18 3v4h-4 M6 21v-4h4",
+  percent:"M19 5L5 19 M7 9.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z M17 19.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z",
+  calendar:"M4 6h16v14H4z M4 10h16 M8 3v5 M16 3v5",
+  repeat:"M17 3l3 3-3 3 M4 11V9a3 3 0 0 1 3-3h13 M7 21l-3-3 3-3 M20 13v2a3 3 0 0 1-3 3H4",
+  chart:"M4 20V4 M4 20h16 M8 16l4-5 3 3 5-7",
+  crown:"M4 18h16 M4 18L3 7l5 4 4-6 4 6 5-4-1 11",
+  truck:"M3 6h11v10H3z M14 10h4l3 3v3h-7 M7 19a1.8 1.8 0 1 0 0-3.6A1.8 1.8 0 0 0 7 19z M17 19a1.8 1.8 0 1 0 0-3.6 1.8 1.8 0 0 0 0 3.6z",
+  cart:"M3 4h2.5l2.2 11h10.6L20.5 7H6.6 M9.5 20a1.3 1.3 0 1 0 0-2.6 1.3 1.3 0 0 0 0 2.6z M17 20a1.3 1.3 0 1 0 0-2.6 1.3 1.3 0 0 0 0 2.6z",
+  coins:"M9 10c3.3 0 6-1.1 6-2.5S12.3 5 9 5 3 6.1 3 7.5 5.7 10 9 10z M3 7.5v4C3 12.9 5.7 14 9 14 M3 11.5v4C3 16.9 5.7 18 9 18 M15 7.5v2 M15 16.5c3.3 0 6-1.1 6-2.5s-2.7-2.5-6-2.5-6 1.1-6 2.5 2.7 2.5 6 2.5z M9 14v4c0 1.4 2.7 2.5 6 2.5s6-1.1 6-2.5v-4",
+  ring:"M12 21a6.5 6.5 0 1 0 0-13 6.5 6.5 0 0 0 0 13z M9.5 8.5L8 5.5l4-2.5 4 2.5-1.5 3",
+  house:"M4 11l8-7 8 7 M6 9.5V20h12V9.5 M10 20v-5h4v5",
+  flame:"M12 21c-3.9 0-6.5-2.6-6.5-6 0-3.5 3-5.5 3.5-9 2 1.3 3 3 3 4.5 1-1 1.5-2.3 1.5-3.5 2.7 2 5 4.8 5 8 0 3.4-2.6 6-6.5 6z",
+  hammer:"M14 4l6 6-2.5 2.5-6-6z M12.5 7.5L4 16l3 3 8.5-8.5",
+  sparkle:"M12 3l1.8 5.2L19 10l-5.2 1.8L12 17l-1.8-5.2L5 10l5.2-1.8z M18.5 16l.8 2.2 2.2.8-2.2.8-.8 2.2-.8-2.2-2.2-.8 2.2-.8z",
+  spark4:"M12 2.5C12.6 9 15 11.4 21.5 12 15 12.6 12.6 15 12 21.5 11.4 15 9 12.6 2.5 12 9 11.4 11.4 9 12 2.5z",
+  link:"M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1 M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1",
+  key:"M8 15a4 4 0 1 1 3.7-5.5H21v3h-2v2.5h-3v-2.5h-4.3A4 4 0 0 1 8 15z",
+  arrowLeft:"M19 12H5 M11 6l-6 6 6 6",
+  arrowRight:"M5 12h14 M13 6l6 6-6 6",
+  close:"M6 6l12 12 M18 6L6 18",
+  chevR:"M9 6l6 6-6 6",
+  check:"M5 12.5l4.5 4.5L19 7",
+  circle:"M12 20a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"
+};
+(function(){
+  let s = "";
+  for (const [k,d] of Object.entries(ICONS))
+    s += `<symbol id="i-${k}" viewBox="0 0 24 24"><path d="${d}" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></symbol>`;
+  s += `<linearGradient id="gSilver" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".5" stop-color="#CFCEE3"/><stop offset="1" stop-color="#8A89AE"/></linearGradient>
+  <linearGradient id="gLilac" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F1ECFF"/><stop offset=".5" stop-color="#B3A6EA"/><stop offset="1" stop-color="#6E62AE"/></linearGradient>
+  <linearGradient id="gStone" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#C4C3DE"/><stop offset="1" stop-color="#77769A"/></linearGradient>
+  <linearGradient id="gDeep" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#454A88"/><stop offset="1" stop-color="#2A2E66"/></linearGradient>`;
+  document.getElementById("sprite").innerHTML = s;
+})();
+const ico = k => `<svg aria-hidden="true"><use href="#i-${k}"/></svg>`;
+function spark(cx, cy, r){
+  const k = r*.16;
+  return `M${cx},${cy-r} C${cx+k},${cy-k} ${cx+k},${cy-k} ${cx+r},${cy} C${cx+k},${cy+k} ${cx+k},${cy+k} ${cx},${cy+r} C${cx-k},${cy+k} ${cx-k},${cy+k} ${cx-r},${cy} C${cx-k},${cy-k} ${cx-k},${cy-k} ${cx},${cy-r}Z`;
+}
+/* status mark: a 4-point sparkle */
+function statusMark(st){
+  if (st === "done") return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${spark(12,12,10)}" style="fill:var(--text)"/></svg>`;
+  if (st === "active") return `<svg viewBox="0 0 24 24" aria-hidden="true"><path class="pulse" d="${spark(12,12,10)}" style="fill:color-mix(in srgb, var(--accent) 30%, transparent);stroke:var(--accent);stroke-width:1.5"/></svg>`;
+  return `<svg viewBox="0 0 24 24" aria-hidden="true"><path d="${spark(12,12,8)}" style="fill:none;stroke:var(--mute);stroke-width:1.5"/></svg>`;
+}
+/* six gems, rough to set */
+function gemSVG(kind, glow){
+  const sp = glow ? `<path d="${spark(54,12,6)}" fill="#FFFFFF"/><path d="${spark(10,50,3.5)}" fill="#F1D08B"/>` : "";
+  const art = {
+    ore:`<path d="M12 42 18 22 34 13 49 19 54 37 45 51 25 53Z" fill="url(#gStone)"/>
+         <path d="M18 22 31 31 34 13 M31 31 49 19 M31 31 25 53 M31 31 54 37" stroke="#FFFFFF" stroke-opacity=".16" stroke-width="1.2" fill="none"/>
+         <path d="M29 30 37 26 40 33 33 37Z" fill="url(#gSilver)"/><path d="M41 40 45 38 46 42 42 43Z" fill="url(#gSilver)" opacity=".8"/>`,
+    geode:`<path d="M10 36 15 18 31 10 49 15 56 33 47 50 26 54 13 48Z" fill="url(#gStone)"/>
+           <ellipse cx="33" cy="33" rx="15" ry="12.5" fill="url(#gDeep)"/>
+           <path d="M20 34 25 27 27 36Z M26 25 31 21 31 30Z M33 21 39 23 35 30Z M41 26 46 31 39 33Z M44 36 40 43 37 37Z M35 45 29 44 33 39Z M24 41 22 37 28 39Z" fill="url(#gLilac)"/>`,
+    crystal:`<path d="M17 54 17 37 22 29 27 37 27 54Z" fill="url(#gLilac)" opacity=".75"/>
+             <path d="M25 56 25 25 33 8 33 56Z" fill="url(#gLilac)"/>
+             <path d="M33 8 41 25 41 56 33 56Z" fill="url(#gSilver)"/>
+             <path d="M41 56 41 40 46 33 50 40 50 56Z" fill="url(#gSilver)" opacity=".7"/>`,
+    cabochon:`<ellipse cx="32" cy="33" rx="22" ry="17" fill="none" stroke="url(#gSilver)" stroke-width="3.5"/>
+              <ellipse cx="32" cy="33" rx="18" ry="13.5" fill="url(#gLilac)"/>
+              <ellipse cx="26" cy="28" rx="7" ry="3.6" fill="#FFFFFF" opacity=".55"/>`,
+    brilliant:`<path d="M32 8 49 15 56 32 49 49 32 56 15 49 8 32 15 15Z" fill="url(#gLilac)"/>
+               <path d="M32 20 40.5 23.5 44 32 40.5 40.5 32 44 23.5 40.5 20 32 23.5 23.5Z" fill="url(#gSilver)"/>
+               <path d="M32 8 32 20 M49 15 40.5 23.5 M56 32 44 32 M49 49 40.5 40.5 M32 56 32 44 M15 49 23.5 40.5 M8 32 20 32 M15 15 23.5 23.5 M32 8 40.5 23.5 M56 32 40.5 40.5 M32 56 23.5 40.5 M8 32 23.5 23.5" stroke="#FFFFFF" stroke-opacity=".45" stroke-width="1" fill="none"/>`,
+    ring:`<ellipse cx="32" cy="42" rx="16" ry="13" fill="none" stroke="url(#gSilver)" stroke-width="4.5"/>
+          <path d="M23 30 27 32 M41 30 37 32" stroke="url(#gSilver)" stroke-width="3" stroke-linecap="round"/>
+          <path d="M21 20 26 13 38 13 43 20Z" fill="url(#gSilver)"/>
+          <path d="M21 20 43 20 32 33Z" fill="url(#gLilac)"/>
+          <path d="M26 13 30 20 32 13 34 20 38 13 M30 20 32 33 34 20" stroke="#FFFFFF" stroke-opacity=".5" stroke-width="1" fill="none"/>`
+  }[kind];
+  return `<svg class="gem" viewBox="0 0 64 64" aria-hidden="true">${art}${sp}</svg>`;
+}
+
+/* ===================== Helpers and derived data ===================== */
+const esc = t => String(t).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const fmt = n => Math.round(n).toLocaleString("en-US") + "₫";
+const tc = t => `var(--t-${t})`;
+const MS = {};
+STAGES.forEach((s,i) => { s.index = i; s.milestones.forEach((m,k) => { m.stage = s; m.k = k; m.needs = m.needs || []; MS[m.id] = m; }); });
+STAGES.forEach(s => {
+  const depth = {};
+  const d = m => depth[m.id] ?? (depth[m.id] = m.needs.length ? 1 + Math.max(...m.needs.map(n => d(MS[n]))) : 0);
+  s.milestones.forEach(m => m.depth = d(m));
+  s.depthCount = 1 + Math.max(...s.milestones.map(m => m.depth));
+  s.order = [...s.milestones].sort((a,b) => a.depth - b.depth || a.k - b.k);
+});
+const prog = s => ({done: s.milestones.filter(m => m.status === "done").length, total: s.milestones.length});
+const stStatus = s => { const p = prog(s); return p.done === p.total ? "done" : s.milestones.some(m => m.status !== "todo") ? "active" : "todo"; };
+const CURRENT = STAGES.find(s => stStatus(s) !== "done") || STAGES[STAGES.length-1];
+const fundTotal = g => g.fund ? g.fund.reduce((a,f) => a + f.amt, 0) : 0;
+const fundRound = g => Math.ceil(fundTotal(g)/100000)*100000;
+const dependents = m => m.stage.milestones.filter(x => x.needs.includes(m.id));
+const stageLabel = s => `Stage ${s.index+1} · ${s.name}`;
+const STATUS_WORD = {done:"Done", active:"In progress", todo:"Not started"};
+
+/* ===================== State ===================== */
+let selStage = CURRENT.index, filter = null;
+let view = null;           // {type:"m", id} | {type:"g", stage}
+let trail = [];            // previous views, for Back
+let returnFocus = null;
+
+/* ===================== Header + stepper ===================== */
+function renderStepper(){
+  const el = document.getElementById("stepper");
+  const lastDone = STAGES.filter(s => stStatus(s) === "done").length;
+  const litW = lastDone ? `${(lastDone/5)*84}%` : "0";
+  el.innerHTML = `<span class="lit" style="width:${litW}"></span>` + STAGES.map(s => {
+    const p = prog(s), st = stStatus(s);
+    return `<li><button class="step-btn ${st}" type="button" data-stage="${s.index}" aria-pressed="${s.index === selStage}" ${s === CURRENT ? 'aria-current="step"' : ""}>
+      <span class="gem-slot">${gemSVG(s.gem, st !== "todo")}${s === CURRENT ? `<span class="here-tag">${ico("spark4")}Now</span>` : ""}</span>
+      <span class="step-num">Stage ${s.index+1}</span>
+      <span class="step-name">${esc(s.name)}</span>
+      <span class="step-months">${esc(s.months)}</span>
+      <span class="step-prog">${p.done}/${p.total} done</span>
+    </button></li>`;
+  }).join("");
+  el.querySelectorAll(".step-btn").forEach(b => b.addEventListener("click", () => selectStage(+b.dataset.stage)));
+}
+function selectStage(i, scroll){
+  selStage = i; filter = null;
+  renderStepper(); renderStage();
+  try { history.replaceState(null, "", "#" + STAGES[i].id); } catch(e){}
+  if (scroll) document.getElementById("stage").scrollIntoView({behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block:"start"});
+}
+
+/* ===================== Stage ===================== */
+function cardHTML(m){
+  const sel = view && view.type === "m" && view.id === m.id;
+  return `<button class="card ${m.status}${sel ? " is-selected" : ""}${filter && m.track === filter ? " match" : ""}" type="button" data-id="${m.id}" style="--c:${tc(m.track)}" aria-label="${esc(m.name)}, ${STATUS_WORD[m.status]}">
+    <span class="ctop"><span class="trk">${ico(TRACKS[m.track].icon)}${TRACKS[m.track].label}</span><span class="st">${statusMark(m.status)}</span></span>
+    <span class="nm">${esc(m.name)}</span>
+    <span class="sh">${esc(m.short)}</span>
+  </button>`;
+}
+function gateBox(s, inSheet){
+  const g = s.gate, next = STAGES[s.index+1];
+  const checks = `<ul class="checks">${g.checks.map(c => `<li>${ico(g.final ? "spark4" : "circle")}<span>${esc(c)}</span></li>`).join("")}</ul>`;
+  let money = "";
+  if (g.fund) money = `<div class="fund"><div class="k">Unlock fund</div><div class="n">≈ ${fmt(fundRound(g))}</div>
+      <p class="why">Pays to start ${esc(next.name)} and keeps it running for 3 months if sales dip.</p></div>`;
+  else if (g.note) money = `<div class="fund"><div class="k">Money</div><p class="why">${esc(g.note)}</p></div>`;
+  if (inSheet) return {checks, money};
+  return `<aside class="gate">
+    <div class="eyebrow">${g.final ? "The goal" : "Stage gate"}</div>
+    <h3>${g.final ? "What a pro brand looks like" : `To move to Stage ${next.index+1}: ${esc(next.name)}`}</h3>
+    <p class="lead">${g.final ? "When all of this is true, the plan is done." : "All of these must be true first."}</p>
+    ${checks}${money}
+    <button class="btn-line" type="button" data-gate="${s.index}">${g.fund ? "See what the fund pays for" : "Open gate details"}${ico("arrowRight")}</button>
+  </aside>`;
+}
+function renderStage(){
+  const s = STAGES[selStage], p = prog(s), el = document.getElementById("stage");
+  const prev = STAGES[s.index-1], next = STAGES[s.index+1];
+  const used = Object.keys(TRACKS).filter(k => s.milestones.some(m => m.track === k));
+  const rows = [];
+  for (let d=0; d<s.depthCount; d++){
+    const ms = s.order.filter(m => m.depth === d);
+    const allDone = ms.every(m => m.status === "done");
+    rows.push(`<li class="row${allDone ? " done" : ""}">
+      <div class="row-label"><span class="row-num">${d+1}</span><span class="row-cap">${d === 0 ? "Start" : "Then"}</span></div>
+      <div class="cards">${ms.map(cardHTML).join("")}</div>
+    </li>`);
+  }
+  el.innerHTML = `
+    <div class="hero">
+      <div class="hero-gem">${gemSVG(s.gem, true)}</div>
+      <div>
+        <div class="meta">Stage ${s.index+1}</div>
+        <h2>${esc(s.name)}</h2>
+        <p class="goal">${esc(s.goal)}</p>
+        <p class="about">${esc(s.about)}</p>
+        <div class="prog-row"><span class="bar"><i style="width:${Math.round(p.done/p.total*100)}%"></i></span>${p.done} of ${p.total} steps done</div>
+      </div>
+      ${(() => { const [a,b] = s.months.match(/\d+/g).map(Number); return `<div class="when" aria-label="${esc(s.months)} of 36">
+        <span class="when-stack"><span class="when-lbl">Months</span><span class="when-num">${a}–${b}</span></span>
+      </div>`; })()}
+    </div>
+    <div class="stage-grid">
+      <section class="board${filter ? " filtered" : ""}" aria-label="Steps in ${esc(s.name)}">
+        <div class="board-head">
+          <h3>Steps</h3>
+          <div class="legend"><span>${statusMark("done")}Done</span><span>${statusMark("active")}In progress</span><span>${statusMark("todo")}Not started</span></div>
+        </div>
+        <div class="filters" role="group" aria-label="Show one part of the business">
+          <button class="chip" type="button" data-f="" aria-pressed="${!filter}">All</button>
+          ${used.map(k => `<button class="chip" type="button" data-f="${k}" aria-pressed="${filter === k}" style="--c:${tc(k)}">${ico(TRACKS[k].icon)}${TRACKS[k].label}</button>`).join("")}
+        </div>
+        <ol class="spine">${rows.join("")}</ol>
+      </section>
+      ${gateBox(s)}
+    </div>
+    <nav class="stage-nav" aria-label="Other stages">
+      <button type="button" data-go="${s.index-1}" ${prev ? "" : "hidden"}>${ico("arrowLeft")}${prev ? gemSVG(prev.gem, false) : ""}<span><small>Stage ${s.index}</small>${prev ? esc(prev.name) : ""}</span></button>
+      <button type="button" data-go="${s.index+1}" ${next ? "" : "hidden"}><span style="text-align:right"><small>Stage ${s.index+2}</small>${next ? esc(next.name) : ""}</span>${next ? gemSVG(next.gem, false) : ""}${ico("arrowRight")}</button>
+    </nav>`;
+  el.querySelectorAll(".card").forEach(c => {
+    c.addEventListener("click", () => openView({type:"m", id:c.dataset.id}, false, c));
+    const m = MS[c.dataset.id];
+    const rel = on => [...m.needs, ...dependents(m).map(x => x.id)].forEach(id => { const n = el.querySelector(`.card[data-id="${id}"]`); if (n) n.classList.toggle("rel", on); });
+    c.addEventListener("mouseenter", () => rel(true)); c.addEventListener("mouseleave", () => rel(false));
+  });
+  el.querySelectorAll(".chip").forEach(b => b.addEventListener("click", () => { filter = b.dataset.f || null; renderStage(); }));
+  el.querySelector("[data-gate]").addEventListener("click", e => openView({type:"g", stage:s.index}, false, e.currentTarget));
+  el.querySelectorAll("[data-go]").forEach(b => b.addEventListener("click", () => selectStage(+b.dataset.go, true)));
+}
+
+/* ===================== Detail view ===================== */
+const detail = document.getElementById("detail");
+function viewName(v){ return v.type === "m" ? MS[v.id].name : (STAGES[v.stage].gate.final ? "The goal" : `Gate to ${STAGES[v.stage+1].name}`); }
+function openView(v, fromLink, trigger){
+  if (fromLink && view) trail.push(view);
+  if (!fromLink){ trail = []; returnFocus = trigger || document.activeElement; }
+  view = v;
+  const stIdx = v.type === "m" ? MS[v.id].stage.index : v.stage;
+  if (stIdx !== selStage){ selStage = stIdx; filter = null; renderStepper(); }
+  renderStage();
+  renderDetail();
+}
+function closeView(){
+  view = null; trail = [];
+  detail.hidden = true; detail.innerHTML = ""; document.body.classList.remove("locked");
+  renderStage();
+  const ds = returnFocus && returnFocus.dataset ? returnFocus.dataset : {};
+  const target = ds.id ? document.querySelector(`.card[data-id="${ds.id}"]`) : ds.gate ? document.querySelector("[data-gate]") : null;
+  if (target) target.focus({preventScroll:true});
+  returnFocus = null;
+}
+function goBack(){ if (!trail.length) return; view = trail.pop(); const st = view.type === "m" ? MS[view.id].stage.index : view.stage; if (st !== selStage){ selStage = st; renderStepper(); } renderStage(); renderDetail(); }
+function lnk(m){ return `<button class="lnk" type="button" data-to="m:${m.id}" style="--c:${tc(m.track)}">${ico(m.icon)}<span>${esc(m.name)}</span>${ico("chevR").replace("<svg", '<svg class="go"')}</button>`; }
+function gateLnk(i, label){ return `<button class="lnk gate-lnk" type="button" data-to="g:${i}">${ico("key")}<span>${esc(label)}</span>${ico("chevR").replace("<svg", '<svg class="go"')}</button>`; }
+function renderDetail(){
+  const v = view; let bar, body, pager = "";
+  const back = trail.length ? `<button class="back-btn" type="button" data-back>${ico("arrowLeft")}Back to ${esc(viewName(trail[trail.length-1]))}</button>` : "";
+  if (v.type === "m"){
+    const m = MS[v.id], s = m.stage, c = tc(m.track);
+    const needs = m.needs.map(id => MS[id]);
+    const deps = dependents(m);
+    const prevStage = STAGES[s.index-1];
+    const needsHTML = needs.length ? needs.map(lnk).join("")
+      : prevStage ? gateLnk(prevStage.index, `Stage ${prevStage.index+1} gate passed`) : `<span class="lnk plain">${ico("spark4")}<span>Nothing — start here</span></span>`;
+    const depsHTML = deps.length ? deps.map(lnk).join("")
+      : s.gate.final ? gateLnk(s.index, "The goal") : gateLnk(s.index, `Gate to Stage ${s.index+2}: ${STAGES[s.index+1].name}`);
+    bar = `${back}<div class="crumbs">${esc(stageLabel(s))}${ico("chevR")}<b>Step ${m.depth+1}</b>${ico("chevR")}<b>${esc(m.name)}</b></div>`;
+    body = `
+      <div class="s-head" style="--c:${c}">
+        <div class="s-badge">${ico(m.icon)}</div>
+        <div><h2 id="dTitle">${esc(m.name)}</h2>
+          <div class="pills"><span class="pill ${m.status}">${STATUS_WORD[m.status]}</span><span class="pill track" style="--c:${c}">${ico(TRACKS[m.track].icon)}${TRACKS[m.track].label}</span><span class="pill">Step ${m.depth+1} of ${s.depthCount}</span></div>
+        </div>
+      </div>
+      <p class="summary">${esc(m.short)}</p>
+      <div class="flow">
+        <div class="flow-col"><div class="k">Do first</div><div class="links">${needsHTML}</div></div>
+        <div class="flow-arrow">${ico("arrowRight")}</div>
+        <div class="flow-col me"><div class="k">This step</div><div class="me-name">${esc(m.name)}</div></div>
+        <div class="flow-arrow">${ico("arrowRight")}</div>
+        <div class="flow-col"><div class="k">Opens up</div><div class="links">${depsHTML}</div></div>
+      </div>
+      <div class="cols">
+        <div class="sec"><h4>Why it matters</h4><p>${esc(m.why)}</p></div>
+        <div class="sec"><h4>How to do it</h4><ol>${m.steps.map(x => `<li>${esc(x)}</li>`).join("")}</ol></div>
+      </div>
+      <div class="done-when">${ico("check")}<div><b>Done when</b>${esc(m.done)}</div></div>`;
+    const i = s.order.indexOf(m), pm = s.order[i-1], nm = s.order[i+1];
+    pager = `<div class="pager">
+      <button type="button" data-to="${pm ? "m:"+pm.id : ""}" ${pm ? "" : "hidden"}>${ico("arrowLeft")}<span><small>Previous in this stage</small>${pm ? esc(pm.name) : ""}</span></button>
+      <button type="button" data-to="${nm ? "m:"+nm.id : "g:"+s.index}"><span style="text-align:right"><small>${nm ? "Next in this stage" : "End of stage"}</small>${nm ? esc(nm.name) : (s.gate.final ? "The goal" : "Stage gate")}</span>${ico("arrowRight")}</button>
+    </div>`;
+  } else {
+    const s = STAGES[v.stage], g = s.gate, next = STAGES[s.index+1];
+    const parts = gateBox(s, true);
+    const table = g.fund ? `<div class="sec" style="margin-top:22px"><h4>What the fund pays for</h4>
+        <table class="br"><tbody>${g.fund.map(f => `<tr><td>${esc(f.item)}${f.est ? '<span class="est">est.</span>' : ""}${f.src ? `<span class="src">${esc(f.src)}</span>` : ""}</td><td class="a">${fmt(f.amt)}</td></tr>`).join("")}
+        <tr class="tot"><td>Total</td><td class="a">${fmt(fundTotal(g))}</td></tr></tbody></table>
+        <p style="margin-top:10px;font-size:13.5px">The fund covers starting the next stage plus 3 months of its running costs. Before hiring a person, it covers 6 months of their pay. Amounts marked est. are planning guesses.</p></div>` : "";
+    const lastSteps = s.milestones.filter(m => !dependents(m).length);
+    bar = `${back}<div class="crumbs">${esc(stageLabel(s))}${ico("chevR")}<b>${g.final ? "The goal" : "Stage gate"}</b></div>`;
+    body = `
+      <div class="s-head" style="--c:var(--accent)">
+        <div class="s-badge">${ico(g.final ? "spark4" : "key")}</div>
+        <div><h2 id="dTitle">${g.final ? "What a pro brand looks like" : `Gate: Stage ${s.index+1} → Stage ${s.index+2}`}</h2>
+          <div class="pills"><span class="pill active">${g.final ? "Goal" : "Gate"}</span><span class="pill">${esc(s.name)}${next ? " → " + esc(next.name) : ""}</span></div>
+        </div>
+      </div>
+      <p class="summary">${g.final ? "When all of this is true, the plan is complete." : `Everything that must be true before you start ${esc(next.name)}.`}</p>
+      <div class="cols">
+        <div class="sec"><h4>Checks</h4>${parts.checks}</div>
+        <div class="sec"><h4>Comes after</h4><div class="links">${lastSteps.map(lnk).join("")}</div>${parts.money}</div>
+      </div>
+      ${table}`;
+    pager = next ? `<div class="pager"><span></span><button type="button" data-stagego="${next.index}"><span style="text-align:right"><small>Next stage</small>Go to Stage ${next.index+1}: ${esc(next.name)}</span>${ico("arrowRight")}</button></div>` : "";
+  }
+  detail.hidden = false; document.body.classList.add("locked");
+  detail.innerHTML = `<div class="scrim" data-scrim>
+    <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="dTitle">
+      <div class="sheet-bar">${bar}<button class="icon-btn" type="button" data-close aria-label="Close">${ico("close")}</button></div>
+      <div class="sheet-body">${body}</div>${pager}
+    </div></div>`;
+  const sheet = detail.querySelector(".sheet");
+  sheet.scrollTop = 0;
+  detail.querySelector("[data-close]").addEventListener("click", closeView);
+  detail.querySelector("[data-scrim]").addEventListener("click", e => { if (e.target === e.currentTarget) closeView(); });
+  const b = detail.querySelector("[data-back]"); if (b) b.addEventListener("click", goBack);
+  detail.querySelectorAll("[data-to]").forEach(el => el.addEventListener("click", () => {
+    const t = el.dataset.to; if (!t) return;
+    const [type, id] = t.split(":");
+    openView(type === "m" ? {type:"m", id} : {type:"g", stage:+id}, true);
+  }));
+  detail.querySelectorAll("[data-stagego]").forEach(el => el.addEventListener("click", () => { const i = +el.dataset.stagego; closeView(); selectStage(i, true); }));
+  (b || detail.querySelector("[data-close]")).focus({preventScroll:true});
+}
+document.addEventListener("keydown", e => {
+  if (detail.hidden) return;
+  if (e.key === "Escape"){ e.preventDefault(); closeView(); return; }
+  if (e.key === "Tab"){
+    const f = [...detail.querySelectorAll("button:not([hidden])")];
+    if (!f.length) return;
+    if (e.shiftKey && document.activeElement === f[0]){ e.preventDefault(); f[f.length-1].focus(); }
+    else if (!e.shiftKey && document.activeElement === f[f.length-1]){ e.preventDefault(); f[0].focus(); }
+  }
+});
+
+/* ===================== Start ===================== */
+const h = (location.hash || "").slice(1);
+const hi = STAGES.findIndex(s => s.id === h);
+if (hi >= 0) selStage = hi;
+renderStepper(); renderStage();
+
+/* background: a few slow 4-point sparkles */
+const cv = document.getElementById("sparkles"), ctx = cv.getContext("2d");
+let pts = [];
+const rnd = n => { const x = Math.sin(n*91.7)*10000; return x - Math.floor(x); };
+function size(){
+  const dpr = Math.min(devicePixelRatio || 1, 2);
+  cv.width = innerWidth*dpr; cv.height = innerHeight*dpr; ctx.setTransform(dpr,0,0,dpr,0,0);
+  const n = Math.round(innerWidth*innerHeight/4200);
+  const COLORS = ["#FFFFFF","#FFFFFF","#FFE6A3","#FFD0E6","#D2E1FF"];
+  pts = Array.from({length:n}, (_,k) => { const big = rnd(k+1500) < .12; return {x:rnd(k+1)*innerWidth, y:rnd(k+300)*innerHeight, r: big ? 5+rnd(k+700)*3.5 : 1.2+rnd(k+700)*2.6, big, c:COLORS[Math.floor(rnd(k+1900)*COLORS.length)], p:rnd(k+900)*6.28, s:(big ? .35 : .5)+rnd(k+1100), ox:0, oy:0}; });
+}
+function drawSpark(x,y,r){ const k=r*.16; ctx.beginPath(); ctx.moveTo(x,y-r); ctx.bezierCurveTo(x+k,y-k,x+k,y-k,x+r,y); ctx.bezierCurveTo(x+k,y+k,x+k,y+k,x,y+r); ctx.bezierCurveTo(x-k,y+k,x-k,y+k,x-r,y); ctx.bezierCurveTo(x-k,y-k,x-k,y-k,x,y-r); ctx.fill(); }
+let mx = -9999, my = -9999;
+addEventListener("pointermove", e => { if (e.pointerType === "mouse"){ mx = e.clientX; my = e.clientY; } });
+document.addEventListener("pointerleave", () => { mx = my = -9999; });
+// an occasional shooting star, random direction
+let shoot = null, nextShoot = 3000 + Math.random()*5000;
+function drawShoot(t, B){
+  if (!shoot && t > nextShoot){
+    const a = Math.random()*Math.PI*2, sp = .17 + Math.random()*.08;
+    shoot = {x: innerWidth*(.1 + Math.random()*.8), y: innerHeight*(.1 + Math.random()*.8), ux: Math.cos(a), uy: Math.sin(a), sp, t0: t, life: 2900 + Math.random()*800};
+  }
+  if (!shoot) return;
+  const k = t - shoot.t0;
+  if (k > shoot.life){ shoot = null; nextShoot = t + 7000 + Math.random()*9000; return; }
+  const hx = shoot.x + shoot.ux*shoot.sp*k, hy = shoot.y + shoot.uy*shoot.sp*k;
+  if (B.some(b => hx > b.l && hx < b.r && hy > b.t && hy < b.b)) return;
+  const len = 150*Math.min(1, k/750), tx = hx - shoot.ux*len, ty = hy - shoot.uy*len;
+  const fade = Math.sin(Math.PI*k/shoot.life);
+  const g = ctx.createLinearGradient(tx, ty, hx, hy);
+  g.addColorStop(0, "rgba(255,230,170,0)"); g.addColorStop(1, "rgba(255,255,255,0.95)");
+  ctx.globalAlpha = fade; ctx.strokeStyle = g; ctx.lineWidth = 1.8; ctx.lineCap = "round";
+  ctx.beginPath(); ctx.moveTo(tx, ty); ctx.lineTo(hx, hy); ctx.stroke();
+  ctx.fillStyle = "#FFFFFF"; ctx.shadowColor = "#FFE6A3"; ctx.shadowBlur = 12;
+  drawSpark(hx, hy, 4.5); ctx.shadowBlur = 0;
+}
+function draw(t){
+  ctx.clearRect(0,0,innerWidth,innerHeight);
+  // keep the header and stage bar clear
+  const B = [...document.querySelectorAll(".top,.stepper")].map(e => { const r = e.getBoundingClientRect(); return {l:r.left-20, t:r.top-20, r:r.right+20, b:r.bottom+20}; });
+  for (const p of pts){
+    const dx = p.x+p.ox-mx, dy = p.y+p.oy-my, d = Math.hypot(dx,dy);
+    if (d < 140 && d > 0){ const f = (140-d)/140*2.2; p.ox += dx/d*f; p.oy += dy/d*f; }
+    p.ox *= .94; p.oy *= .94;
+    const x = p.x+p.ox, y = p.y+p.oy;
+    if (B.some(b => x > b.l && x < b.r && y > b.t && y < b.b)) continue;
+    ctx.globalAlpha = .12 + .5*(.5+.5*Math.sin(p.p + t*.0012*p.s));
+    ctx.fillStyle = p.c;
+    if (p.big){ ctx.shadowColor = p.c; ctx.shadowBlur = 10; }
+    drawSpark(x,y,p.r);
+    if (p.big) ctx.shadowBlur = 0;
+  }
+  drawShoot(t, B);
+  ctx.globalAlpha = 1;
+}
+size();
+let rz; addEventListener("resize", () => { clearTimeout(rz); rz = setTimeout(() => { size(); if (matchMedia("(prefers-reduced-motion: reduce)").matches) draw(0); }, 150); });
+if (matchMedia("(prefers-reduced-motion: reduce)").matches) draw(0); else { const loop = t => { draw(t); requestAnimationFrame(loop); }; requestAnimationFrame(loop); }
+</script>

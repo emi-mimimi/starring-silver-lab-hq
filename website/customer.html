@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Starring Silver Lab · Customer</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Figtree:wght@400;500;600;700&family=Gloock&display=swap">
+<link rel="stylesheet" href="assets/site.css">
+<style>
+/* Customer: meet the customer (one character with tags you can open) → the moments they buy →
+   why we fit (pick a pain or gain, a line draws to what answers it). */
+.sec{padding-block:72px 8px}
+.sec h2{font-family:var(--f-display);font-weight:400;font-size:clamp(30px,4vw,44px);line-height:1.05;margin:0 0 28px;text-wrap:balance}
+
+/* meet the customer */
+.hero{display:grid;grid-template-columns:minmax(0,7fr) minmax(0,5fr);gap:32px 56px;align-items:center;padding-block:56px 24px}
+.hero-txt{display:flex;flex-direction:column;gap:16px;min-width:0}
+.hero h1{font-family:var(--f-display);font-weight:400;font-size:clamp(36px,4.6vw,58px);line-height:1.06;margin:0;text-wrap:balance}
+.hero h1 em{font-style:normal;color:var(--t-people);text-shadow:0 0 28px color-mix(in srgb, var(--t-people) 35%, transparent)}
+.hero p{margin:0;color:var(--text-2);font-size:18px;max-width:40ch;text-wrap:pretty}
+.persona{position:relative;border:1px solid var(--line);border-radius:26px;overflow:hidden;display:flex;flex-direction:column;align-items:center;padding:26px 20px 18px;
+  background:radial-gradient(circle at 50% 42%, color-mix(in srgb, var(--t-people) 16%, transparent), transparent 52%), color-mix(in srgb, var(--surface) 60%, transparent)}
+#person{display:flex;justify-content:center;width:100%}
+.persona .fig{width:150px;display:block;overflow:visible;margin:0 0 16px}
+.fig .pc{filter:drop-shadow(0 0 3px rgba(255,255,255,.75))}
+.tags{display:flex;flex-wrap:wrap;justify-content:center;gap:8px}
+.tag{position:static!important;transform:none!important;border:1px solid var(--line);background:color-mix(in srgb, var(--bg) 75%, transparent);color:var(--text-2);
+  border-radius:999px;padding:7px 13px;font-size:13.5px;font-weight:600;cursor:pointer;transition:all .25s;backdrop-filter:blur(4px)}
+.tag:hover{color:var(--text);border-color:var(--text-2)}
+.tag[aria-pressed="true"]{background:var(--t-people);border-color:var(--t-people);color:var(--bg)}
+.detail{margin-top:14px;width:100%;display:grid;grid-template-columns:22px 1fr;gap:10px;align-items:start;padding:14px 16px;border-radius:16px;background:var(--bg);border:1px solid var(--line);min-height:72px}
+.detail .spark{width:18px;height:18px;color:var(--t-people);margin-top:2px}
+.detail b{display:block;font-size:15px}
+.detail span{display:block;font-size:14px;color:var(--text-2)}
+.detail.swap{animation:swap .35s ease}
+@keyframes swap{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* moments */
+.moments{position:relative;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
+.moments::before{content:"";position:absolute;left:11px;right:11px;top:11px;height:1px;background:repeating-linear-gradient(90deg, var(--line) 0 4px, transparent 4px 10px)}
+.moment{position:relative;display:flex;flex-direction:column;gap:8px;min-width:0}
+.moment .spark{width:22px;height:22px;color:var(--t-people);background:var(--bg);border-radius:50%;padding:2px;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.moment:hover .spark{transform:rotate(90deg) scale(1.2)}
+.moment .when{font-family:var(--f-mono);font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--t-people);margin-top:8px}
+.moment p{margin:0;font-family:var(--f-display);font-size:clamp(20px,2vw,24px);line-height:1.2;text-wrap:balance}
+
+/* why we fit */
+.fit-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:14px 24px;margin-bottom:28px}
+.fit-head h2{margin:0}
+.seg{display:inline-flex;padding:4px;border:1px solid var(--line);border-radius:999px;background:var(--bg)}
+.seg button{border:none;background:none;border-radius:999px;padding:7px 18px;font-size:14px;font-weight:600;color:var(--text-2);cursor:pointer;transition:background .25s, color .25s}
+.seg button[aria-pressed="true"]{background:var(--text);color:var(--bg)}
+.board{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 120px minmax(0,1fr);gap:0}
+.col{display:flex;flex-direction:column;gap:10px;min-width:0}
+.col .lbl{font-family:var(--f-mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--mute);margin-bottom:4px}
+.them{text-align:left;border:1px solid var(--line);background:color-mix(in srgb, var(--surface) 60%, transparent);border-radius:14px;padding:13px 16px;font-size:15px;font-weight:500;cursor:pointer;color:var(--text-2);transition:all .25s}
+.them:hover{color:var(--text);border-color:var(--text-2)}
+.them[aria-pressed="true"]{color:var(--text);border-color:var(--t-people);background:color-mix(in srgb, var(--t-people) 12%, var(--surface))}
+.them .ans{display:none}
+.us{border:1px solid transparent;border-radius:14px;padding:13px 16px;font-size:15px;color:var(--mute);transition:all .3s;cursor:pointer}
+.us.on{color:var(--text);border-color:color-mix(in srgb, var(--accent) 60%, transparent);background:color-mix(in srgb, var(--accent) 8%, transparent);box-shadow:0 0 22px color-mix(in srgb, var(--accent) 12%, transparent)}
+.wire{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+.wire path{fill:none;stroke:var(--accent);stroke-width:2;filter:drop-shadow(0 0 4px color-mix(in srgb, var(--accent) 70%, transparent));transition:d .4s cubic-bezier(.2,.8,.2,1)}
+.wire circle{fill:var(--accent);transition:cx .4s, cy .4s}
+
+@media (max-width:900px){
+  .hero{grid-template-columns:1fr}
+  .moments{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:34px}
+  .moments::before{display:none}
+}
+@media (max-width:720px){
+  .board{grid-template-columns:1fr}
+  .board .col.right,.wire{display:none}
+  .board .col.left .lbl:last-child{display:none}
+  .them[aria-pressed="true"] .ans{display:block;margin-top:8px;padding-top:8px;border-top:1px solid var(--line);color:var(--accent);font-weight:500}
+}
+@media (max-width:560px){ .moments{grid-template-columns:1fr} }
+</style>
+
+<canvas id="sparkles" aria-hidden="true"></canvas>
+<header class="nav" id="nav" data-clear></header>
+
+<main class="wrap">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-txt" data-clear>
+      <div class="eyebrow" id="hero-eyebrow"></div>
+      <h1 id="hero-title"></h1>
+      <p id="hero-line"></p>
+    </div>
+    <div class="persona" data-clear>
+      <div id="person"></div>
+      <div class="tags" id="tags" role="group" aria-label="About our customer"></div>
+      <div class="detail" id="detail" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="moments-title">
+    <h2 id="moments-title" data-clear></h2>
+    <div class="moments" id="moments" data-clear></div>
+  </section>
+
+  <section class="sec" aria-labelledby="fit-title">
+    <div class="fit-head" data-clear>
+      <h2 id="fit-title"></h2>
+      <div class="seg" role="group" aria-label="Show">
+        <button id="tab-pains" aria-pressed="true"></button>
+        <button id="tab-gains" aria-pressed="false"></button>
+      </div>
+    </div>
+    <div class="board" id="board" data-clear>
+      <div class="col left" id="left"></div>
+      <div></div>
+      <div class="col right" id="right"></div>
+      <svg class="wire" id="wire" aria-hidden="true"><path id="wire-path"/><circle id="wire-a" r="4"/><circle id="wire-b" r="4"/></svg>
+    </div>
+  </section>
+
+  <nav class="pager" id="pager" aria-label="Pages" data-clear></nav>
+</main>
+
+<script src="assets/content.js"></script>
+<script src="assets/site.js"></script>
+<script>
+(function(){
+  const S = window.SITE, C = S.customer, { spark, STAR } = window.SSL;
+  const $ = id => document.getElementById(id);
+  const still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const arrow = '<svg class="arw" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>';
+
+  SSL.renderNav("customer");
+  SSL.renderPager("customer");
+
+  /* meet the customer */
+  const H = C.hero;
+  $("hero-eyebrow").textContent = H.eyebrow;
+  $("hero-title").innerHTML = H.title.replace("that's theirs", "<em>that's theirs</em>");
+  $("hero-line").textContent = H.line;
+
+  const SILVER = "#F4F2FF";
+  const star = (x, y, r) => `<g class="pc"><path fill="${SILVER}" transform="translate(${x - r} ${y - r}) scale(${r / 12})" d="${STAR}"/></g>`;
+  $("person").innerHTML = `<svg class="fig" viewBox="0 0 120 150" aria-hidden="true">
+      <path fill="#D9926B" d="M24 62C24 34 42 24 60 24S96 34 96 62L100 118H82L84 66H36L38 118H20Z"/>
+      <path fill="#33407A" d="M8 150C12 120 34 106 60 106S108 120 112 150Z"/>
+      <path fill="#262A63" d="M40 110 60 132 80 110 74 107 60 120 46 107Z"/>
+      <rect x="52" y="86" width="16" height="22" rx="6" fill="#E9E7FF"/>
+      <circle cx="60" cy="62" r="30" fill="#E9E7FF"/>
+      <circle cx="49" cy="66" r="3" fill="#1D1F52"/><circle cx="71" cy="66" r="3" fill="#1D1F52"/>
+      <path d="M55 77q5 4 10 0" fill="none" stroke="#1D1F52" stroke-width="2" stroke-linecap="round"/>
+      <path fill="#D9926B" d="M27 64A33 36 0 0 1 93 64C84 52 72 47 60 49C48 47 36 52 27 64Z"/>
+      ${star(30, 84, 6)}${star(90, 84, 6)}${star(80, 40, 7)}
+    </svg>`;
+
+  /* tags sit either side of the character: l = to its left, r = to its right, c = above it (three a side) */
+  const POS = [ ["l", 24], ["r", 20], ["l", 42], ["r", 38], ["l", 60], ["r", 56] ];
+  const at = ([side, top]) => side === "l" ? `right:calc(50% + 98px);top:${top}%` : side === "r" ? `left:calc(50% + 98px);top:${top}%` : `left:50%;transform:translateX(-50%);top:${top}%`;
+  const tags = $("tags"), detail = $("detail");
+  tags.innerHTML = H.tags.map((t, i) => `<button class="tag" data-i="${i}" aria-pressed="false" style="${at(POS[i])}">${t.label}</button>`).join("");
+  function pickTag(i, animate){
+    tags.querySelectorAll(".tag").forEach((b, k) => b.setAttribute("aria-pressed", String(k === i)));
+    detail.innerHTML = `${spark()}<div><b>${H.tags[i].label}</b><span>${H.tags[i].detail}</span></div>`;
+    if (animate){ detail.classList.remove("swap"); void detail.offsetWidth; detail.classList.add("swap"); }
+  }
+  tags.addEventListener("click", e => { const b = e.target.closest(".tag"); if (b) pickTag(+b.dataset.i, true); });
+  pickTag(0, false);
+
+  /* moments */
+  $("moments-title").textContent = C.moments.title;
+  $("moments").innerHTML = C.moments.items.map(m => `<div class="moment">${spark()}<span class="when">${m.when}</span><p>${m.line}</p></div>`).join("");
+
+  /* why we fit */
+  const F = C.fit;
+  $("fit-title").textContent = F.title;
+  $("tab-pains").textContent = F.tabs.pains; $("tab-gains").textContent = F.tabs.gains;
+  const left = $("left"), right = $("right"), board = $("board"), wire = $("wire"), path = $("wire-path"), A = $("wire-a"), Bc = $("wire-b");
+  const ORDER = [2, 0, 4, 1, 3];   /* answers listed in a different order, so the line has somewhere to go */
+  let kind = "pains", act = 0;
+  function build(){
+    const list = F[kind], heads = F.heads[kind];
+    left.innerHTML = `<span class="lbl">${heads[0]}</span>` + list.map((p, i) => `<button class="them" data-i="${i}" aria-pressed="false">${p.them}<span class="ans">${p.us}</span></button>`).join("");
+    right.innerHTML = `<span class="lbl">${heads[1]}</span>` + ORDER.map(i => `<div class="us" data-i="${i}">${list[i].us}</div>`).join("");
+    pick(0);
+  }
+  function pick(i){
+    act = i;
+    left.querySelectorAll(".them").forEach(b => b.setAttribute("aria-pressed", String(+b.dataset.i === i)));
+    right.querySelectorAll(".us").forEach(d => d.classList.toggle("on", +d.dataset.i === i));
+    draw();
+  }
+  function draw(){
+    const a = left.querySelector(`.them[data-i="${act}"]`), b = right.querySelector(`.us[data-i="${act}"]`);
+    if (!a || !b || getComputedStyle(wire).display === "none") return;
+    const o = board.getBoundingClientRect(), ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
+    const x1 = ra.right - o.left, y1 = ra.top + ra.height / 2 - o.top, x2 = rb.left - o.left, y2 = rb.top + rb.height / 2 - o.top, m = (x1 + x2) / 2;
+    path.setAttribute("d", `M${x1} ${y1} C${m} ${y1} ${m} ${y2} ${x2} ${y2}`);
+    A.setAttribute("cx", x1); A.setAttribute("cy", y1); Bc.setAttribute("cx", x2); Bc.setAttribute("cy", y2);
+    if (!still){ const len = path.getTotalLength(); path.animate([{strokeDasharray: `0 ${len}`}, {strokeDasharray: `${len} 0`}], {duration: 420, easing: "cubic-bezier(.2,.8,.2,1)"}); }
+  }
+  left.addEventListener("click", e => { const b = e.target.closest(".them"); if (b) pick(+b.dataset.i); });
+  left.addEventListener("pointerover", e => { const b = e.target.closest(".them"); if (b && +b.dataset.i !== act && matchMedia("(hover:hover)").matches) pick(+b.dataset.i); });
+  right.addEventListener("click", e => { const d = e.target.closest(".us"); if (d) pick(+d.dataset.i); });
+  right.addEventListener("pointerover", e => { const d = e.target.closest(".us"); if (d && +d.dataset.i !== act && matchMedia("(hover:hover)").matches) pick(+d.dataset.i); });
+  function tab(k){
+    kind = k;
+    $("tab-pains").setAttribute("aria-pressed", String(k === "pains"));
+    $("tab-gains").setAttribute("aria-pressed", String(k === "gains"));
+    build();
+  }
+  $("tab-pains").addEventListener("click", () => tab("pains"));
+  $("tab-gains").addEventListener("click", () => tab("gains"));
+  build();
+  new ResizeObserver(() => draw()).observe(board);
+  document.fonts && document.fonts.ready.then(draw);
+
+  SSL.sparkles();
+})();
+</script>
